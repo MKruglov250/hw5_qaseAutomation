@@ -16,13 +16,19 @@ import static com.codeborne.selenide.Selenide.*;
 @Log4j2
 public class LoginUtils {
 
-    static SelenideElement loginElement = $("input[name='email']");
+    static SelenideElement loginElement = $x("//input[@name='email']");
 
-    static SelenideElement passwordElement = $("input[name='password']");
+    static SelenideElement passwordElement = $x("//input[@name='password']");
 
-    static SelenideElement loginButton = $("input[value='Login']");
+    static SelenideElement loginButton = $x("//button[@type='submit']");
 
-    static SelenideElement logoutButton = $("a[href='./log_out.py']");
+    static SelenideElement menuButton = $x("//img[contains(@src,'.jpg')]");
+
+    static SelenideElement projectsMessage = $x("//h1[text()='Projects']");
+
+    static SelenideElement logoutButton = $x("//*[text()='Sign out']");
+
+    static SelenideElement loginMessage = $x("//*[text()='Log in to your account']");
 
     @Step("Get Login input field from current page")
     public static SelenideElement getLoginElement(){
@@ -61,15 +67,18 @@ public class LoginUtils {
         getPasswordElement().sendKeys(user.getPassword());
         getLoginButton().click();
 
-        //Check if login is successful (True)
-        return $x("//a[@href='./log_out.py']").exists();
+        //Check if login is successful
+        return projectsMessage.exists();
     }
 
     @Step("Log out from website")
-    public static void logout(){
-        open("cgi-bin/main.py");
+    public static boolean logout(){
+        menuButton.click();
         if (logoutButton.exists()){
             logoutButton.click();
+            return loginMessage.exists();
+        } else {
+            return false;
         }
     }
 }

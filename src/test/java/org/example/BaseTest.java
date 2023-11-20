@@ -49,7 +49,7 @@ public class BaseTest {
 
         getFileBytes("config.properties");
 
-        Configuration.baseUrl = "https://www.sharelane.com/";
+        Configuration.baseUrl = "https://app.qase.io/";
         Configuration.browser = PropertyReader.getBrowserProperty();
         Configuration.headless = false;
         open(".");

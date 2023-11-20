@@ -13,6 +13,9 @@ logs/
 *.iml
 *.ipr
 
+### Allure ###
+.allure
+
 ### Eclipse ###
 .apt_generated
 .classpath
@@ -39,5 +42,4 @@ build/
 .DS_Store
 
 ### Credentials service file ###
-src/main/resources/credentials.json
-!**utils/creditcard.json
+src/resources/credentials.json
