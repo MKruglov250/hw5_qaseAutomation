@@ -39,5 +39,5 @@ build/
 .DS_Store
 
 ### Credentials service file ###
-/src/resources/credentials.json
-/utils/creditcard.json
+!**src/resources/credentials.json
+!**utils/creditcard.json
