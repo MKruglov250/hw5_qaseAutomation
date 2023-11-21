@@ -11,15 +11,15 @@ import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
+import java.util.Objects;
 
-import static com.codeborne.selenide.Selenide.$$;
-import static com.codeborne.selenide.Selenide.$x;
+import static com.codeborne.selenide.Selenide.*;
 
 @Log4j2
 public class TestCasePage {
 
-    TestCaseModel firstCaseModel = TestCaseModelBuilder.getFirstTestCase();
-    TestCaseModel secondCaseModel = TestCaseModelBuilder.getSecondTestCase();
+    TestCaseModel firstCaseModel = TestCaseModelBuilder.getTestCase(1);
+    TestCaseModel secondCaseModel = TestCaseModelBuilder.getTestCase(2);
 
     SelenideElement createCaseButton = $x("//a[@id='create-case-button']");
     SelenideElement firstTestCaseElement = $x("//*[text()='First Test Case']");
@@ -248,6 +248,41 @@ public class TestCasePage {
     public void confirmDeletion(){
         deleteButton.click();
         log.debug("Confirmed test case deletion");
+    }
+
+    @Step("Create Test Case")
+    public void createTestCase(){
+        newTestCase();
+        log.debug("Create New Test Case window opened");
+        enterTestCaseData();
+        log.debug("Test Case Info Entered");
+        saveTestCase();
+        log.debug("Save button pressed");
+        log.info("Test Case created");
+    }
+
+    @Step("Check First Test Case exists in Repository")
+    public boolean checkFirstTestCaseExists(){
+        log.debug("Checking First Test Case exists on Repository page");
+        return firstTestCaseElement.exists();
+    }
+
+    @Step("Check that First Test Case is read")
+    public boolean checkFirstTestcaseRead(){
+        log.debug("Checking if First Test Case is read");
+        openTestCase();
+        editTestCase();
+        return (Objects.equals(titleInput.getValue(), "First Test Case"));
+    }
+
+    @Step("Check editing First Test Case")
+    public String checkEditFirstTestCase(){
+        openTestCase();
+        editTestCase();
+        setDescription("Brand-new edited description");
+        saveTestCase();
+        editTestCase();
+        return (descriptionInput.getText());
     }
 
     @Step("Check delete message")

@@ -1,5 +1,5 @@
 <testCases>
-    <TestCaseOne>
+    <TestCase>
         <title>First Test Case</title>
         <description>Description of First Test Case</description>
         <statusDropdown>Actual</statusDropdown>
@@ -20,8 +20,8 @@
         <testStepTwoName>Perform silly move</testStepTwoName>
         <testStepTwoData>Set silly values</testStepTwoData>
         <testStepTwoResult>Verify silly consequence</testStepTwoResult>
-    </TestCaseOne>
-    <TestCaseTwo>
+    </TestCase>
+    <TestCase>
         <title>Second Test Case</title>
         <description>Second Test Case description</description>
         <statusDropdown>Draft</statusDropdown>
@@ -42,5 +42,5 @@
         <testStepTwoName>Perform stylish move</testStepTwoName>
         <testStepTwoData>Set stylish values</testStepTwoData>
         <testStepTwoResult>Verify stylish consequence</testStepTwoResult>
-    </TestCaseTwo>
+    </TestCase>
 </testCases>

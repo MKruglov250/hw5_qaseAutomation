@@ -1,12 +1,10 @@
 package org.example;
 
 import lombok.extern.log4j.Log4j2;
-import org.example.model.UserModel;
 import org.example.utilities.LoginUtils;
 import org.json.simple.parser.ParseException;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.xml.sax.SAXException;
@@ -35,34 +33,27 @@ public class TestCasePageTest extends BaseTest {
 
     @Test(description = "Check Creation of Test Case", groups = "Smoke")
     public void testCreateTestCase(){
-        testCasePage.newTestCase();
-        log.info("Create New Test Case window opened");
-        testCasePage.enterTestCaseData();
-        log.info("Test Case Info Entered");
-        testCasePage.saveTestCase();
-        log.info("Save button pressed");
-        Assert.assertTrue(testCasePage.firstTestCaseElement.exists());
+        log.info("Asserting Create Test Case One");
+        testCasePage.createTestCase();
+        Assert.assertTrue(testCasePage.checkFirstTestCaseExists());
+        log.info("Checked Creation of Test Case One");
     }
 
     @Test(description = "Check Reading Test Case", groups = "Smoke",
             priority = 1)
     public void testReadTestCaseOne(){
-        testCasePage.openTestCase();
-        testCasePage.editTestCase();
-        Assert.assertEquals(testCasePage.titleInput.getValue(),
-                "First Test Case");
+        log.info("Asserting Read Test Case One");
+        Assert.assertTrue(testCasePage.checkFirstTestcaseRead());
+        log.info("Checked Test Case One is read");
     }
 
     @Test(description = "Check Editing Test Case", groups = "Regression",
             priority = 2)
     public void testEditTestCaseOne(){
-        testCasePage.openTestCase();
-        testCasePage.editTestCase();
-        testCasePage.setDescription("Brand-new edited description");
-        testCasePage.saveTestCase();
-        testCasePage.editTestCase();
-        Assert.assertEquals(testCasePage.descriptionInput.getText(),
+        log.info("Asserting Edit Test Case One");
+        Assert.assertEquals(testCasePage.checkEditFirstTestCase(),
                 "Brand-new edited description");
+        log.info("Checked Description field of Test Case One");
     }
 
     @Test(description = "Check Deleting test case", groups = "Regression",
@@ -74,7 +65,7 @@ public class TestCasePageTest extends BaseTest {
         testCasePage.confirmDeletion();
         boolean deleteMessageExists = testCasePage.checkDeleteMessage();
         Assert.assertTrue(deleteMessageExists);
-        log.info("Delete message exists: ");
+        log.info("Delete message exists: " + deleteMessageExists);
     }
 
     @AfterMethod(description = "Logging out after performing test")
