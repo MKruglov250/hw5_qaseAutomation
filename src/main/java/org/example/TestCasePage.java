@@ -58,6 +58,18 @@ public class TestCasePage {
     public TestCasePage() throws ParserConfigurationException, IOException, SAXException {
     }
 
+    @Step("Create Mock Test Case")
+    public void createMockTestCase(TestCaseModel mockCase){
+        log.debug("Creating Test Case from model " + mockCase.getTitle());
+        firstCaseModel = mockCase;
+        open("project/QASEAPP");
+        createCaseButton.click();
+        setTitle();
+        clickAddStep();
+        setStepAction();
+        saveTestCase();
+    }
+
     @Step("Opening Create Test Case page")
     public void newTestCase(){
         log.debug("Opening Create Test Case page...");
