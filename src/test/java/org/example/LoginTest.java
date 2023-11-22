@@ -5,7 +5,7 @@ import lombok.extern.log4j.Log4j2;
 import org.example.utilities.LoginUtils;
 import org.json.simple.parser.ParseException;
 import org.testng.Assert;
-import org.testng.annotations.AfterMethod;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -24,7 +24,8 @@ public class LoginTest extends BaseTest {
     }
 
     @TmsLink("QAT-9")
-    @Test(description = "Checking Login To Website with valid credentials", groups = "Smoke")
+    @Test(description = "Checking Login To Website with valid credentials", groups = "Smoke",
+            priority = 1)
     public void checkValidLogin() throws IOException, ParseException {
         log.info("Checking login with valid credentials");
         Assert.assertTrue(loginPage.loginToSiteValid());
@@ -37,7 +38,7 @@ public class LoginTest extends BaseTest {
         Assert.assertFalse(loginPage.loginToSiteInvalid());
     }
 
-    @AfterMethod
+    @AfterClass
     public void logout(){
         LoginUtils.logout();
     }
