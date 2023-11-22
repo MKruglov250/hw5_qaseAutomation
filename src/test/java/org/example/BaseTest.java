@@ -37,17 +37,16 @@ public class BaseTest {
         return Files.readAllBytes(Paths.get("src/resources", resourceName));
     }
 
-    @Parameters("BrowserType")
+//    @Parameters({"BrowserType"})
     @BeforeTest(alwaysRun = true, description = "Initialize testing for Qase.io")
-    public void before(String sBrowserType) throws IOException {
+    public void before() throws IOException {
         log.info("Starting configuring web driver");
         getFileBytes("config.properties");
         Configuration.baseUrl = "https://app.qase.io/";
-        if (sBrowserType != null){
-            Configuration.browser = sBrowserType;
-        } else {
-            Configuration.browser = PropertyReader.getBrowserProperty();
-        }
+//        if (sBrowserType != null){
+//            Configuration.browser = sBrowserType;
+//        } else {}
+        Configuration.browser = PropertyReader.getBrowserProperty();
         Configuration.headless = false;
         open(".");
 
@@ -58,7 +57,7 @@ public class BaseTest {
     }
 
     @AfterTest(description = "Closing web drivers", alwaysRun = true)
-    public void afterSuite() {
+    public void afterTest() {
         closeWebDriver();
     }
 
