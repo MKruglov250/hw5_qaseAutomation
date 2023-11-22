@@ -43,7 +43,7 @@ public class TestPlanPageTest extends BaseTest {
 
     @Test(description = "Check Create Test Plan")
     public void checkCreateTestPlan(){
-        log.info("Checking Create Test Plan");
+        log.info("Checking Create Test Plan 1");
         Assert.assertTrue(testPlanPage.createTestPlan(testPlanModel));
     }
 

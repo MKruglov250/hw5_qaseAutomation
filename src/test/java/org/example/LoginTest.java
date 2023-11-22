@@ -21,14 +21,14 @@ public class LoginTest extends BaseTest {
         open("login");
     }
 
-    @Test(description = "Checking Login To Website", groups = "Smoke")
+    @Test(description = "Checking Login To Website with valid credentials", groups = "Smoke")
     public void checkValidLogin() throws IOException, ParseException {
         log.info("Checking login with valid credentials");
         Assert.assertTrue(loginPage.loginToSiteValid());
         LoginUtils.logout();
     }
 
-    @Test(description = "Checking Login To Website", groups = "Regression")
+    @Test(description = "Checking Login To Website with bad credentials", groups = "Regression")
     public void checkInvalidLogin() {
         log.info("Checking login with valid credentials");
         Assert.assertFalse(loginPage.loginToSiteInvalid());
