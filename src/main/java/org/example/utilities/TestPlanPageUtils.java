@@ -8,6 +8,10 @@ import org.example.TestCasePage;
 import org.example.model.TestCaseModel;
 import org.example.model.TestCaseModelBuilder;
 import org.example.model.TestPlanModel;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.IOException;
 
 import static com.codeborne.selenide.Selenide.$x;
 import static com.codeborne.selenide.Selenide.open;
@@ -26,16 +30,7 @@ public class TestPlanPageUtils {
     static SelenideElement descriptionInput = $x("//div[@contenteditable='true' " +
             "and @class='ProseMirror toastui-editor-contents']/p");
     static SelenideElement addCasesButton = $x("//button[@id='edit-plan-add-cases-button']");
-    SelenideElement addFilterButton = $x("//button[text()='Add filter']");
-    SelenideElement searchInput = addCasesButton.preceding(0);
-    static SelenideElement firstSuiteControl = $x("(//p[text()='First Suite'])[1]");
-    SelenideElement secondSuiteControl = $x("(//p[text()='Second Suite'])[1]");
-    static SelenideElement firstCaseCheckbox = $x("//div[@class='suitecase-info']/p[text()='Case 1']/parent::div/parent::div//label");
-    static SelenideElement secondCaseCheckbox = $x("//div[@class='suitecase-info']/p[text()='Case 2']/parent::div/parent::div//label");
     static SelenideElement doneButton = $x("//span[text()='Done']/parent::button");
-
-    static SelenideElement testPlanOneControl = $x("//a[text()='Test Plan 1']");
-    SelenideElement testPlanOneDesc = $x("//p[text()='Simple description']");
     static SelenideElement trippledotButton = $x("//button[@class='btn btn-secondary']");
     static SelenideElement editButton = $x("//a[contains(@href,'/edit/')]");
     static SelenideElement deleteButton = $x("//a[@class='text-danger']");
@@ -45,9 +40,20 @@ public class TestPlanPageUtils {
     public static void createMockTestCases(){
         mockTestCaseOne = TestCaseModelBuilder.getTestCase();
         mockTestCaseTwo = TestCaseModelBuilder.getTestCase();
+        log.debug("Creating mock test case models");
         testCasePage.createMockTestCase(mockTestCaseOne);
         testCasePage.createMockTestCase(mockTestCaseTwo);
-        log.info("Mock test case models created");
+        log.info("Mock test cases created");
+    }
+
+    @Step("Creating two real test cases for e2e scenario")
+    public static void createRealTestCases() throws ParserConfigurationException, IOException, SAXException {
+        var realTestCaseOne = TestCaseModelBuilder.getTestCase(1);
+        var realTestCaseTwo = TestCaseModelBuilder.getTestCase(2);
+        log.debug("Real test case models created");
+        testCasePage.createTestCase(realTestCaseOne);
+        testCasePage.createTestCase(realTestCaseTwo);
+        log.info("Real test cases added");
     }
 
     @Step("Creating Test Plan")
@@ -62,6 +68,31 @@ public class TestPlanPageUtils {
         log.debug("Test plan saved");
     }
 
+    @Step("Create e2e test plan")
+    public static void createRealPlan(TestPlanModel testPlanModel){
+        createPlanButton.click();
+        log.debug("Test plan creation form open");
+        setTitle(testPlanModel.getTitle());
+        setDescription(testPlanModel.getDescription());
+        log.debug("Test plan name and description set");
+        selectRealTestCases();
+        savePlanButton.click();
+        log.debug("Test plan e2e with real cases saved");
+    }
+
+    @Step("Click suite")
+    public static void clickSuite(String suiteName){
+        SelenideElement suiteControl = $x(String.format("(//p[text()='%s'])[1]",suiteName));
+        suiteControl.click();
+    }
+
+    @Step("Click test case")
+    public static void selectCase(String caseName){
+        SelenideElement caseCheckbox = $x(String.format("//div[@class='suitecase-info']/p[text()='%s']" +
+                        "/parent::div/parent::div//label",caseName));
+        caseCheckbox.click();
+    }
+
     @Step("Set test plan Title")
     public static void setTitle(String title){
         titleInput.setValue(title);
@@ -72,14 +103,25 @@ public class TestPlanPageUtils {
         descriptionInput.setValue(description);
     }
 
-    @Step("Select Test Cases")
+    @Step("Select Mock Test Cases")
     public static void selectTestCases(){
         addCasesButton.click();
-        firstSuiteControl.click();
-        firstCaseCheckbox.click();
-        secondCaseCheckbox.click();
+        clickSuite("First Suite");
+        selectCase("Case 1");
+        selectCase("Case 2");
         doneButton.click();
         log.debug("Test cases selected");
+    }
+
+    @Step("Select real test cases")
+    public static void selectRealTestCases(){
+        addCasesButton.click();
+        clickSuite("First Suite");
+        selectCase("First Test Case");
+        clickSuite("Second Suite");
+        selectCase("Second Test Case");
+        doneButton.click();
+        log.debug("Real test cases selected");
     }
 
     @Step("Edit Test Plan")

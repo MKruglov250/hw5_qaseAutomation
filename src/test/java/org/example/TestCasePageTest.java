@@ -42,7 +42,7 @@ public class TestCasePageTest extends BaseTest {
         Assert.assertTrue(testCasePage.checkTestCaseExists(firstCaseModel.getTitle()));
     }
 
-    @Test(description = "Check Creation of Test Case 1", groups = "Smoke")
+    @Test(description = "Check Creation of Test Case 2", groups = "Smoke")
     public void testCreateTestCaseTwo(){
         log.info("Checking Create Test Case One");
         testCasePage.createTestCase(secondCaseModel);
