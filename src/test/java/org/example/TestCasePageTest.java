@@ -37,47 +37,40 @@ public class TestCasePageTest extends BaseTest {
 
     @Test(description = "Check Creation of Test Case 1", groups = "Smoke")
     public void testCreateTestCaseOne(){
-        log.info("Asserting Create Test Case One");
+        log.info("Checking Create Test Case One");
         testCasePage.createTestCase(firstCaseModel);
-        Assert.assertTrue(testCasePage.checkFirstTestCaseExists());
-        log.info("Checked Creation of Test Case One");
+        Assert.assertTrue(testCasePage.checkTestCaseExists(firstCaseModel.getTitle()));
     }
 
     @Test(description = "Check Creation of Test Case 1", groups = "Smoke")
     public void testCreateTestCaseTwo(){
-        log.info("Asserting Create Test Case One");
+        log.info("Checking Create Test Case One");
         testCasePage.createTestCase(secondCaseModel);
-        Assert.assertTrue(testCasePage.checkFirstTestCaseExists());
-        log.info("Checked Creation of Test Case One");
+        Assert.assertTrue(testCasePage.checkTestCaseExists(secondCaseModel.getTitle()));
     }
 
     @Test(description = "Check Reading Test Case", groups = "Smoke",
             priority = 1)
     public void testReadTestCaseOne(){
-        log.info("Asserting Read Test Case One");
-        Assert.assertTrue(testCasePage.checkFirstTestcaseRead());
-        log.info("Checked Test Case One is read");
+        log.info("Checking Read Test Case One");
+        Assert.assertEquals(testCasePage.checkTestCaseRead(firstCaseModel.getTitle()),
+                "First Test Case");
     }
 
     @Test(description = "Check Editing Test Case", groups = "Regression",
             priority = 2)
     public void testEditTestCaseOne(){
-        log.info("Asserting Edit Test Case One");
-        Assert.assertEquals(testCasePage.checkEditFirstTestCase(),
+        log.info("Checking Edit Test Case One");
+        Assert.assertEquals(testCasePage.checkEditTestCase(firstCaseModel.getTitle()),
                 "Brand-new edited description");
-        log.info("Checked Description field of Test Case One");
     }
 
     @Test(description = "Check Deleting test case", groups = "Regression",
             priority = 3)
     public void testDeleteTestCaseOne(){
-        log.info("Checking Test Case Deletion");
-        testCasePage.openFirstTestCase();
-        testCasePage.deleteTestCase();
-        testCasePage.confirmDeletion();
-        boolean deleteMessageExists = testCasePage.checkDeleteMessage();
-        Assert.assertTrue(deleteMessageExists);
-        log.info("Delete message exists: " + deleteMessageExists);
+        log.info("Checking Delete Test Case 1");
+        testCasePage.deleteTestCase(firstCaseModel.getTitle());
+        Assert.assertTrue(testCasePage.checkDeleteMessage());
     }
 
     @AfterMethod(description = "Logging out after performing test")

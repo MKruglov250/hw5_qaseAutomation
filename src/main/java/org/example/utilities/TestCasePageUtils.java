@@ -14,9 +14,7 @@ import static com.codeborne.selenide.Selenide.*;
 public class TestCasePageUtils {
 
     static SelenideElement createCaseButton = $x("//a[@id='create-case-button']");
-    SelenideElement firstTestCaseElement = $x("//*[text()='First Test Case']");
-    SelenideElement secondTestCaseElement = $x("//*[text()='Second Test Case']");
-    SelenideElement saveButton = $x("//*[text()='Save']").parent();
+    static SelenideElement saveButton = $x("//*[text()='Save']").parent();
     static SelenideElement addStep = $x("//*[text()=' Add step']").parent();
     static ElementsCollection pageDropdowns = $$("input[aria-autocomplete='list']");
     static SelenideElement statusElement = pageDropdowns.get(0);
@@ -42,9 +40,9 @@ public class TestCasePageUtils {
             "/following-sibling::div//p)[2]");
     static SelenideElement stepResultInput = $x("(//div[@class='case-create-block steps-block']" +
             "/following-sibling::div//p)[3]");
-    SelenideElement editControl = $x("//a[contains(@href,'/case/QASEAPP/edit')]");
-    SelenideElement deleteControl = editControl.sibling(1);
-    SelenideElement deleteButton = $x("//*[text()='Delete']");
+    static SelenideElement editControl = $x("//a[contains(@href,'/case/QASEAPP/edit')]");
+    static SelenideElement deleteControl = editControl.sibling(1);
+    static SelenideElement deleteButton = $x("//*[text()='Delete']");
     SelenideElement deleteSuccessMessage = $x("//*[text()[contains(.,' was successfully deleted')]]");
 
     public TestCasePageUtils(){
@@ -209,5 +207,37 @@ public class TestCasePageUtils {
     public static void setStepResult(String stepResult){
         stepResultInput.setValue(stepResult);
         log.debug("Step result to: " + stepResult);
+    }
+
+    @Step("Set new description")
+    public static void setNewDescription(){
+        editTestCase();
+        TestCasePageUtils.setDescription("Brand-new edited description");
+        saveTestCase();
+        editTestCase();
+    }
+
+    @Step("Clicking Edit Control")
+    public static void editTestCase(){
+        editControl.click();
+        log.debug("Opened test case for Edit");
+    }
+
+    @Step("Saving test case with created data")
+    public static void saveTestCase(){
+        saveButton.click();
+        log.debug("Saving Test Case Data - God bless us all!");
+    }
+
+    @Step("Clicking Delete Control")
+    public static void deleteCase(){
+        deleteControl.click();
+        log.debug("Deleting test case");
+    }
+
+    @Step("Confirm Deleting Test Case")
+    public static void confirmDeletion(){
+        deleteButton.click();
+        log.debug("Confirmed test case deletion");
     }
 }

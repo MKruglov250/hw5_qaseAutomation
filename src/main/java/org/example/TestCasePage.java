@@ -6,20 +6,13 @@ import lombok.extern.log4j.Log4j2;
 import org.example.model.TestCaseModel;
 import org.example.utilities.TestCasePageUtils;
 
-import java.util.Objects;
-
 import static com.codeborne.selenide.Selenide.*;
 
 @Log4j2
 public class TestCasePage {
 
     SelenideElement createCaseButton = $x("//a[@id='create-case-button']");
-    SelenideElement firstTestCaseElement = $x("//*[text()='First Test Case']");
-    SelenideElement secondTestCaseElement = $x("//*[text()='Second Test Case']");
     SelenideElement saveButton = $x("//*[text()='Save']").parent();
-    SelenideElement editControl = $x("//a[contains(@href,'/case/QASEAPP/edit')]");
-    SelenideElement deleteControl = editControl.sibling(1);
-    SelenideElement deleteButton = $x("//*[text()='Delete']");
     SelenideElement deleteSuccessMessage = $x("//*[text()[contains(.,' was successfully deleted')]]");
 
     public TestCasePage(){
@@ -50,28 +43,18 @@ public class TestCasePage {
         log.debug("Saving Test Case Data - God bless us all!");
     }
 
+    @Step("Delete test case")
+    public void deleteTestCase(String caseName){
+        openTestCase(caseName);
+        TestCasePageUtils.deleteCase();
+        TestCasePageUtils.confirmDeletion();
+    }
+
     @Step("Opening Test Case")
-    public void openFirstTestCase(){
-        firstTestCaseElement.click();
-        log.debug("Clicked on Test Case 1");
-    }
-
-    @Step("Clicking Edit Control")
-    public void editTestCase(){
-        editControl.click();
-        log.debug("Opened test case for Edit");
-    }
-
-    @Step("Clicking Delete Control")
-    public void deleteTestCase(){
-        deleteControl.click();
-        log.debug("Deleting test case");
-    }
-
-    @Step("Confirm Deleting Test Case")
-    public void confirmDeletion(){
-        deleteButton.click();
-        log.debug("Confirmed test case deletion");
+    public void openTestCase(String caseName){
+        SelenideElement testCaseElem = $x(String.format("//*[text()='%s']",caseName));
+        testCaseElem.click();
+        log.debug("Clicked on: " + caseName);
     }
 
     @Step("Create Test Case")
@@ -86,26 +69,25 @@ public class TestCasePage {
     }
 
     @Step("Check First Test Case exists in Repository")
-    public boolean checkFirstTestCaseExists(){
+    public boolean checkTestCaseExists(String caseName){
         log.debug("Checking First Test Case exists on Repository page");
-        return firstTestCaseElement.exists();
+        SelenideElement testCaseElem = $x(String.format("//*[text()='%s']",caseName));
+        return testCaseElem.exists();
     }
 
     @Step("Check that First Test Case is read")
-    public boolean checkFirstTestcaseRead(){
-        log.debug("Checking if First Test Case is read");
-        openFirstTestCase();
-        editTestCase();
-        return (Objects.equals(TestCasePageUtils.titleInput.getValue(), "First Test Case"));
+    public String checkTestCaseRead(String caseName){
+        log.debug("Reading Test Case " + caseName);
+        openTestCase(caseName);
+        TestCasePageUtils.editTestCase();
+        return TestCasePageUtils.titleInput.getValue();
     }
 
     @Step("Check editing First Test Case")
-    public String checkEditFirstTestCase(){
-        openFirstTestCase();
-        editTestCase();
-        TestCasePageUtils.setDescription("Brand-new edited description");
-        saveTestCase();
-        editTestCase();
+    public String checkEditTestCase(String caseName){
+        log.debug("Editing Test Case " + caseName);
+        openTestCase(caseName);
+        TestCasePageUtils.setNewDescription();
         return (TestCasePageUtils.descriptionInput.getText());
     }
 
@@ -114,5 +96,6 @@ public class TestCasePage {
         log.debug("Getting Delete Success Message");
         return deleteSuccessMessage.exists();
     }
+
 
 }
