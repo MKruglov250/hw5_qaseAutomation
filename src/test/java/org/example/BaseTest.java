@@ -60,7 +60,7 @@ public class BaseTest {
         log.info("Web driver configuration complete");
     }
 
-    @AfterSuite
+    @AfterSuite(description = "Closing web drivers", alwaysRun = true)
     public void afterSuite() {
     }
 

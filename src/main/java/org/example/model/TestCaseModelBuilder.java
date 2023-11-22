@@ -42,7 +42,8 @@ public class TestCaseModelBuilder {
         mockTestCases++;
         log.info("Building Mock Test Case #: " + mockTestCases);
         return new TestCaseModel.TestCaseModelBuilder()
-                .title("Mock Test Case #" + mockTestCases)
+                .title("Case " + mockTestCases)
+                .suite("First Suite")
                 .testStepOneName("Mock Step One")
                 .build();
     }

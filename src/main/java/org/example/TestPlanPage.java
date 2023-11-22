@@ -17,9 +17,11 @@ import static com.codeborne.selenide.Selenide.$x;
 @Log4j2
 public class TestPlanPage {
 
-    static TestPlanModel testPlanModel;
+    static TestPlanModel testPlanModel = TestPlanModelBuilder
+            .getTestPlan("Test Plan 1", "Simple description");
     static TestCaseModel mockTestCaseOne;
     static TestCaseModel mockTestCaseTwo;
+
     TestCasePage testCasePage = new TestCasePage();
 
     SelenideElement createPlanButton = $x("//a[@id='createButton']");
@@ -32,39 +34,92 @@ public class TestPlanPage {
     SelenideElement searchInput = addCasesButton.preceding(0);
     SelenideElement firstSuiteControl = $x("(//p[text()='First Suite'])[1]");
     SelenideElement secondSuiteControl = $x("(//p[text()='Second Suite'])[1]");
-    SelenideElement firstCaseCheckbox = $x("//div[@class='suitecase-info']/p[text()='Case 1']/parent::div/parent::div//input");
-    SelenideElement secondCaseCheckbox = $x("//div[@class='suitecase-info']/p[text()='Case 2']/parent::div/parent::div//input");
+    SelenideElement firstCaseCheckbox = $x("//div[@class='suitecase-info']/p[text()='Case 1']/parent::div/parent::div//label");
+    SelenideElement secondCaseCheckbox = $x("//div[@class='suitecase-info']/p[text()='Case 2']/parent::div/parent::div//label");
     SelenideElement doneButton = $x("//span[text()='Done']/parent::button");
+
+    SelenideElement testPlanOneControl = $x("//a[text()='Test Plan 1']");
+    SelenideElement testPlanOneDesc = $x("//p[text()='Simple description']");
+    SelenideElement trippledotButton = $x("//button[@class='btn btn-secondary']");
+    SelenideElement editButton = $x("//a[contains(@href,'/edit/')]");
+    SelenideElement deleteButton = $x("//a[@class='text-danger']");
+    SelenideElement confirmDeleteButton = $x("//span[text()='Delete plan']/parent::button");
+
+    SelenideElement createSuccessMessage = $x("//*[text()='Test plan was created successfully!']");
+    SelenideElement editSuccessMessage = $x("//*[text()='Test plan was edited successfully!']");
+    SelenideElement deleteSuccessMessage = $x("//*[text()='Test plan Test Plan 1 was deleted successfully!']");
 
     public TestPlanPage() throws ParserConfigurationException, IOException, SAXException {
     }
 
-
-    @Step("Creating Test Plan Model")
-    public void createTestPlanModel(String name, String description){
-        testPlanModel = TestPlanModelBuilder.createTestPlan(name, description);
-        log.info("Created Test Plan Model, name = " + name + "; description = " + description);
-    }
-
-    @Step("Creating two mock Test Cases Models")
-    public void createMockTestCaseModels(){
-        log.info("Creating two Mock Test Cases");
+    @Step("Creating two mock Test Cases in repository")
+    public void createMockTestCases(){
+        log.info("Creating two Mock Test Case Models");
         mockTestCaseOne = TestCaseModelBuilder.getTestCase();
         mockTestCaseTwo = TestCaseModelBuilder.getTestCase();
         testCasePage.createMockTestCase(mockTestCaseOne);
         testCasePage.createMockTestCase(mockTestCaseTwo);
-        log.info("Mock test cases created");
+        log.info("Mock test case models created");
     }
 
-    @Step("Adding two mock Test Cases to Qase repository")
-    public void addMockTestCases(){
-
+    @Step("Set test plan Title")
+    public void setTitle(String title){
+        titleInput.setValue(title);
     }
 
-    @Step("Creating New Test Plan")
-    public void createNewTestPlan(){
-
+    @Step("Set test plan Description")
+    public void setDescription(String description){
+        descriptionInput.setValue(description);
     }
+
+    @Step("Select Test Cases")
+    public void selectTestCases(){
+        addCasesButton.click();
+        firstSuiteControl.click();
+        firstCaseCheckbox.click();
+        secondCaseCheckbox.click();
+        doneButton.click();
+        log.debug("Test cases selected");
+    }
+
+    @Step("Create test plan")
+    public boolean createTestPlan(){
+        createPlanButton.click();
+        log.debug("Test plan creation form open");
+        setTitle(testPlanModel.getTitle());
+        setDescription(testPlanModel.getDescription());
+        log.debug("Test plan name and description set");
+        selectTestCases();
+        savePlanButton.click();
+        log.debug("Test plan saved");
+        return createSuccessMessage.exists();
+    }
+
+    @Step("Read test plan")
+    public boolean readTestPlan(){
+        testPlanOneControl.click();
+        return testPlanOneDesc.getText().equals("Simple description");
+    }
+
+    @Step("Edit test plan")
+    public boolean editTestPlan(){
+        testPlanOneControl.click();
+        trippledotButton.click();
+        editButton.click();
+        setDescription("Edited Description");
+        savePlanButton.click();
+        return editSuccessMessage.exists();
+    }
+
+    @Step("Delete test plan")
+    public boolean deleteTestPlan(){
+        testPlanOneControl.click();
+        trippledotButton.click();
+        deleteButton.click();
+        confirmDeleteButton.click();
+        return deleteSuccessMessage.exists();
+    }
+
 
 
 

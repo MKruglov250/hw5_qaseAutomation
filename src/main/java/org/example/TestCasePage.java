@@ -65,10 +65,12 @@ public class TestCasePage {
         open("project/QASEAPP");
         createCaseButton.click();
         setTitle();
+        setSuite();
         clickAddStep();
         setStepAction();
         saveTestCase();
     }
+
 
     @Step("Opening Create Test Case page")
     public void newTestCase(){
