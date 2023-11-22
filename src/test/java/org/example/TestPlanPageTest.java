@@ -23,7 +23,7 @@ public class TestPlanPageTest extends BaseTest {
     static TestPlanModel testPlanModel = TestPlanModelBuilder
             .getTestPlan("Test Plan 1", "Simple description");
     static TestPlanModel realTestPlan = TestPlanModelBuilder
-            .getTestPlan("Real e2e plan", "Broken desc");
+            .getTestPlan("Real e2e plan", "Complicated desc");
 
     public TestPlanPageTest() {
     }
