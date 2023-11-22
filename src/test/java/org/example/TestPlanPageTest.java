@@ -2,6 +2,7 @@ package org.example;
 
 import io.qameta.allure.TmsLink;
 import lombok.extern.log4j.Log4j2;
+import org.example.model.TestCaseModelBuilder;
 import org.example.model.TestPlanModel;
 import org.example.model.TestPlanModelBuilder;
 import org.example.utilities.LoginUtils;
@@ -103,6 +104,7 @@ public class TestPlanPageTest extends BaseTest {
     public void deleteMockCases() throws IOException, ParseException {
         login.loginToSiteValid();
         TestPlanPageUtils.deleteMockTestCases();
+        TestCaseModelBuilder.mockTestCases = 0;
         log.info("Deleted mock test cases");
         LoginUtils.logout();
     }

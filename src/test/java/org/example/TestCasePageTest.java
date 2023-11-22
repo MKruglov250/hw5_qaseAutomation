@@ -88,7 +88,7 @@ public class TestCasePageTest extends BaseTest {
         Assert.assertTrue(testCasePage.checkDeleteMessage());
     }
 
-    @AfterMethod(description = "Logging out after performing test")
+    @AfterMethod(description = "Logging out after performing test", alwaysRun = true)
     public void logout(){
         LoginUtils.logout();
     }

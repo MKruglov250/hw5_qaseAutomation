@@ -38,7 +38,7 @@ public class LoginTest extends BaseTest {
         Assert.assertFalse(loginPage.loginToSiteInvalid());
     }
 
-    @AfterClass
+    @AfterClass(alwaysRun = true)
     public void logout(){
         LoginUtils.logout();
     }

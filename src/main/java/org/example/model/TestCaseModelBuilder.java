@@ -10,7 +10,7 @@ import java.io.IOException;
 @Log4j2
 public class TestCaseModelBuilder {
 
-    static int mockTestCases;
+    public static int mockTestCases;
 
     public static TestCaseModel getTestCase(int i) throws ParserConfigurationException, IOException, SAXException {
         log.info("Building Test case model from XML example: #" + i);

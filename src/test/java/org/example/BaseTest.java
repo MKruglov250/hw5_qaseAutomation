@@ -6,10 +6,7 @@ import io.qameta.allure.Step;
 import lombok.extern.log4j.Log4j2;
 import org.example.utilities.OurListener;
 import org.example.utilities.PropertyReader;
-import org.testng.annotations.AfterSuite;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeSuite;
-import org.testng.annotations.Listeners;
+import org.testng.annotations.*;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -19,6 +16,7 @@ import java.time.Duration;
 import java.util.Date;
 
 
+import static com.codeborne.selenide.Selenide.closeWebDriver;
 import static com.codeborne.selenide.Selenide.open;
 import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
 
@@ -39,13 +37,17 @@ public class BaseTest {
         return Files.readAllBytes(Paths.get("src/resources", resourceName));
     }
 
-    @BeforeClass(alwaysRun = true, description = "Initialize testing for Qase.io")
-    public void before() throws IOException {
+    @Parameters("BrowserType")
+    @BeforeTest(alwaysRun = true, description = "Initialize testing for Qase.io")
+    public void before(String sBrowserType) throws IOException {
         log.info("Starting configuring web driver");
         getFileBytes("config.properties");
-
         Configuration.baseUrl = "https://app.qase.io/";
-        Configuration.browser = PropertyReader.getBrowserProperty();
+        if (sBrowserType != null){
+            Configuration.browser = sBrowserType;
+        } else {
+            Configuration.browser = PropertyReader.getBrowserProperty();
+        }
         Configuration.headless = false;
         open(".");
 
@@ -55,8 +57,9 @@ public class BaseTest {
         log.info("Web driver configuration complete");
     }
 
-    @AfterSuite(description = "Closing web drivers", alwaysRun = true)
+    @AfterTest(description = "Closing web drivers", alwaysRun = true)
     public void afterSuite() {
+        closeWebDriver();
     }
 
 }
