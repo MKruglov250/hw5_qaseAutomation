@@ -1,5 +1,6 @@
 package org.example;
 
+import io.qameta.allure.TmsLink;
 import lombok.extern.log4j.Log4j2;
 import org.example.model.TestPlanModel;
 import org.example.model.TestPlanModelBuilder;
@@ -45,12 +46,14 @@ public class TestPlanPageTest extends BaseTest {
         open("plan/QASEAPP");
     }
 
+    @TmsLink("QAT-5")
     @Test(description = "Check Create Test Plan", groups = "Smoke")
     public void checkCreateTestPlan(){
         log.info("Checking Create Test Plan 1");
         Assert.assertTrue(testPlanPage.createTestPlan(testPlanModel));
     }
 
+    @TmsLink("QAT-6")
     @Test(description = "Check Read Test Plan", groups = "Smoke")
     public void checkReadTestPlanOne(){
         log.info("Checking Read Test Plan 1");
@@ -58,6 +61,7 @@ public class TestPlanPageTest extends BaseTest {
 
     }
 
+    @TmsLink("QAT-7")
     @Test(description = "Check Edit Test Plan", groups = "Regression",
             priority = 1)
     public void checkEditTestPlanOne(){
@@ -65,6 +69,7 @@ public class TestPlanPageTest extends BaseTest {
         Assert.assertTrue(testPlanPage.editTestPlan("Test Plan 1"));
     }
 
+    @TmsLink("QAT-8")
     @Test(description = "Check Delete Test Plan", groups = "Regression",
             priority = 2)
     public void checkDeleteTestPlan(){

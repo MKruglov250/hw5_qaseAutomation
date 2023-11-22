@@ -1,5 +1,6 @@
 package org.example;
 
+import io.qameta.allure.TmsLink;
 import lombok.extern.log4j.Log4j2;
 import org.example.model.TestCaseModel;
 import org.example.model.TestCaseModelBuilder;
@@ -35,6 +36,7 @@ public class TestCasePageTest extends BaseTest {
         open("project/QASEAPP");
     }
 
+    @TmsLink("QAT-1")
     @Test(description = "Check Creation of Test Case 1", groups = "Smoke")
     public void testCreateTestCaseOne(){
         log.info("Checking Create Test Case One");
@@ -42,6 +44,7 @@ public class TestCasePageTest extends BaseTest {
         Assert.assertTrue(testCasePage.checkTestCaseExists(firstCaseModel.getTitle()));
     }
 
+    @TmsLink("QAT-1")
     @Test(description = "Check Creation of Test Case 2", groups = "Smoke")
     public void testCreateTestCaseTwo(){
         log.info("Checking Create Test Case One");
@@ -49,6 +52,7 @@ public class TestCasePageTest extends BaseTest {
         Assert.assertTrue(testCasePage.checkTestCaseExists(secondCaseModel.getTitle()));
     }
 
+    @TmsLink("QAT-2")
     @Test(description = "Check Reading Test Case", groups = "Smoke",
             priority = 1)
     public void testReadTestCaseOne(){
@@ -57,6 +61,7 @@ public class TestCasePageTest extends BaseTest {
                 "First Test Case");
     }
 
+    @TmsLink("QAT-3")
     @Test(description = "Check Editing Test Case", groups = "Regression",
             priority = 2)
     public void testEditTestCaseOne(){
@@ -65,6 +70,7 @@ public class TestCasePageTest extends BaseTest {
                 "Brand-new edited description");
     }
 
+    @TmsLink("QAT-4")
     @Test(description = "Check Deleting test case 1", groups = "Regression",
             priority = 3)
     public void testDeleteTestCaseOne(){
@@ -73,6 +79,7 @@ public class TestCasePageTest extends BaseTest {
         Assert.assertTrue(testCasePage.checkDeleteMessage());
     }
 
+    @TmsLink("QAT-4")
     @Test(description = "Check Deleting test case 2", groups = "Regression",
             priority = 3)
     public void testDeleteTestCaseTwo(){
