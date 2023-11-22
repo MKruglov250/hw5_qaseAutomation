@@ -4,12 +4,10 @@ import lombok.extern.log4j.Log4j2;
 import org.example.model.TestPlanModel;
 import org.example.model.TestPlanModelBuilder;
 import org.example.utilities.LoginUtils;
+import org.example.utilities.TestPlanPageUtils;
 import org.json.simple.parser.ParseException;
 import org.testng.Assert;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 
 import java.io.IOException;
 
@@ -22,7 +20,6 @@ public class TestPlanPageTest extends BaseTest {
     Login login = new Login();
     static TestPlanModel testPlanModel = TestPlanModelBuilder
             .getTestPlan("Test Plan 1", "Simple description");
-
 
     public TestPlanPageTest() {
     }
@@ -71,6 +68,14 @@ public class TestPlanPageTest extends BaseTest {
 
     @AfterMethod(description = "Logging out after performing test")
     public void logout(){
+        LoginUtils.logout();
+    }
+
+    @AfterClass(description = "Deleting Mock Test Cases")
+    public void deleteMockCases() throws IOException, ParseException {
+        login.loginToSiteValid();
+        TestPlanPageUtils.deleteMockTestCases();
+        log.info("Deleted mock test cases");
         LoginUtils.logout();
     }
 

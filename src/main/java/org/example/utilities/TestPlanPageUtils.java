@@ -10,11 +10,15 @@ import org.example.model.TestCaseModelBuilder;
 import org.example.model.TestPlanModel;
 
 import static com.codeborne.selenide.Selenide.$x;
+import static com.codeborne.selenide.Selenide.open;
 
 @Log4j2
 public class TestPlanPageUtils {
 
     static TestCasePage testCasePage = new TestCasePage();
+
+    static TestCaseModel mockTestCaseOne;
+    static TestCaseModel mockTestCaseTwo;
 
     static SelenideElement createPlanButton = $x("//a[@id='createButton']");
     static SelenideElement savePlanButton = $x("//button[@id='save-plan']");
@@ -37,14 +41,10 @@ public class TestPlanPageUtils {
     static SelenideElement deleteButton = $x("//a[@class='text-danger']");
     static SelenideElement confirmDeleteButton = $x("//span[text()='Delete plan']/parent::button");
 
-    SelenideElement createSuccessMessage = $x("//*[text()='Test plan was created successfully!']");
-    SelenideElement editSuccessMessage = $x("//*[text()='Test plan was edited successfully!']");
-    SelenideElement deleteSuccessMessage = $x("//*[text()='Test plan Test Plan 1 was deleted successfully!']");
-
     @Step("Creating two mock test case models")
     public static void createMockTestCases(){
-        TestCaseModel mockTestCaseOne = TestCaseModelBuilder.getTestCase();
-        TestCaseModel mockTestCaseTwo = TestCaseModelBuilder.getTestCase();
+        mockTestCaseOne = TestCaseModelBuilder.getTestCase();
+        mockTestCaseTwo = TestCaseModelBuilder.getTestCase();
         testCasePage.createMockTestCase(mockTestCaseOne);
         testCasePage.createMockTestCase(mockTestCaseTwo);
         log.info("Mock test case models created");
@@ -101,6 +101,14 @@ public class TestPlanPageUtils {
         deleteButton.click();
         confirmDeleteButton.click();
         log.debug("Deleted test plan: " + planName);
+    }
+
+    @Step("Deleting mock test case models")
+    public static void deleteMockTestCases(){
+        open("project/QASEAPP");
+        testCasePage.deleteTestCase(mockTestCaseOne.getTitle());
+        testCasePage.deleteTestCase(mockTestCaseTwo.getTitle());
+        log.info("Mock test case models created");
     }
 
 

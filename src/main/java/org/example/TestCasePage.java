@@ -43,12 +43,6 @@ public class TestCasePage {
         log.debug("Saving Test Case Data - God bless us all!");
     }
 
-    @Step("Delete test case")
-    public void deleteTestCase(String caseName){
-        openTestCase(caseName);
-        TestCasePageUtils.deleteCase();
-        TestCasePageUtils.confirmDeletion();
-    }
 
     @Step("Opening Test Case")
     public void openTestCase(String caseName){
@@ -59,23 +53,19 @@ public class TestCasePage {
 
     @Step("Create Test Case")
     public void createTestCase(TestCaseModel caseModel){
-        newTestCase();
-        log.debug("Create New Test Case window opened");
-        enterTestCaseData(caseModel);
-        log.debug("Test Case Info Entered");
-        saveTestCase();
-        log.debug("Save button pressed");
+        log.info("Creating test case from model: " + caseModel.getTitle());
+        TestCasePageUtils.createTestCase(caseModel);
         log.info("Test Case created");
     }
 
     @Step("Check First Test Case exists in Repository")
     public boolean checkTestCaseExists(String caseName){
-        log.debug("Checking First Test Case exists on Repository page");
+        log.debug("Checking Test Case exists in repository: " + caseName);
         SelenideElement testCaseElem = $x(String.format("//*[text()='%s']",caseName));
         return testCaseElem.exists();
     }
 
-    @Step("Check that First Test Case is read")
+    @Step("Check Reading test case")
     public String checkTestCaseRead(String caseName){
         log.debug("Reading Test Case " + caseName);
         openTestCase(caseName);
@@ -83,7 +73,7 @@ public class TestCasePage {
         return TestCasePageUtils.titleInput.getValue();
     }
 
-    @Step("Check editing First Test Case")
+    @Step("Check Editing test case")
     public String checkEditTestCase(String caseName){
         log.debug("Editing Test Case " + caseName);
         openTestCase(caseName);
@@ -91,7 +81,15 @@ public class TestCasePage {
         return (TestCasePageUtils.descriptionInput.getText());
     }
 
-    @Step("Check delete message")
+
+    @Step("Delete test case")
+    public void deleteTestCase(String caseName){
+        openTestCase(caseName);
+        TestCasePageUtils.deleteCase();
+        TestCasePageUtils.confirmDeletion();
+    }
+
+    @Step("Check Delete message exists")
     public boolean checkDeleteMessage(){
         log.debug("Getting Delete Success Message");
         return deleteSuccessMessage.exists();

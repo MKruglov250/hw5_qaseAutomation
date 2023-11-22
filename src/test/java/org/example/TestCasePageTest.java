@@ -65,11 +65,19 @@ public class TestCasePageTest extends BaseTest {
                 "Brand-new edited description");
     }
 
-    @Test(description = "Check Deleting test case", groups = "Regression",
+    @Test(description = "Check Deleting test case 1", groups = "Regression",
             priority = 3)
     public void testDeleteTestCaseOne(){
         log.info("Checking Delete Test Case 1");
         testCasePage.deleteTestCase(firstCaseModel.getTitle());
+        Assert.assertTrue(testCasePage.checkDeleteMessage());
+    }
+
+    @Test(description = "Check Deleting test case 2", groups = "Regression",
+            priority = 3)
+    public void testDeleteTestCaseTwo(){
+        log.info("Checking Delete Test Case 2");
+        testCasePage.deleteTestCase(secondCaseModel.getTitle());
         Assert.assertTrue(testCasePage.checkDeleteMessage());
     }
 

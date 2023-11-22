@@ -43,9 +43,25 @@ public class TestCasePageUtils {
     static SelenideElement editControl = $x("//a[contains(@href,'/case/QASEAPP/edit')]");
     static SelenideElement deleteControl = editControl.sibling(1);
     static SelenideElement deleteButton = $x("//*[text()='Delete']");
-    SelenideElement deleteSuccessMessage = $x("//*[text()[contains(.,' was successfully deleted')]]");
 
     public TestCasePageUtils(){
+    }
+
+    @Step("Create Test Case")
+    public static void createTestCase(TestCaseModel caseModel){
+        newTestCase();
+        log.debug("Create New Test Case window opened");
+        enterTestCaseData(caseModel);
+        log.debug("Test Case Info Entered");
+        saveTestCase();
+        log.debug("Save button pressed");
+        log.info("Test Case created");
+    }
+
+    @Step("Opening Create Test Case page")
+    public static void newTestCase(){
+        log.debug("Opening Create Test Case page...");
+        createCaseButton.click();
     }
 
 
