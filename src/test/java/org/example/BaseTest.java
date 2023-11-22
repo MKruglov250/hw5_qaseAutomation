@@ -1,15 +1,15 @@
 package org.example;
 
 import com.codeborne.selenide.Configuration;
-import com.codeborne.selenide.logevents.SelenideLogger;
 import io.qameta.allure.Attachment;
 import io.qameta.allure.Step;
-import io.qameta.allure.selenide.AllureSelenide;
 import lombok.extern.log4j.Log4j2;
+import org.example.utilities.OurListener;
 import org.example.utilities.PropertyReader;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.Listeners;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -22,6 +22,7 @@ import java.util.Date;
 import static com.codeborne.selenide.Selenide.open;
 import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
 
+@Listeners(OurListener.class)
 @Log4j2
 public class BaseTest {
 
@@ -41,12 +42,6 @@ public class BaseTest {
     @BeforeClass(alwaysRun = true, description = "Initialize testing for Qase.io")
     public void before() throws IOException {
         log.info("Starting configuring web driver");
-        Configuration.screenshots = true;
-        SelenideLogger.addListener("AllureSelenide", new AllureSelenide()
-                .screenshots(true)
-                .savePageSource(false)
-                .includeSelenideSteps(true));
-
         getFileBytes("config.properties");
 
         Configuration.baseUrl = "https://app.qase.io/";
