@@ -7,10 +7,6 @@ import org.example.model.TestCaseModel;
 import org.example.model.TestCaseModelBuilder;
 import org.example.model.TestPlanModel;
 import org.example.model.TestPlanModelBuilder;
-import org.xml.sax.SAXException;
-
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.IOException;
 
 import static com.codeborne.selenide.Selenide.$x;
 
@@ -49,7 +45,7 @@ public class TestPlanPage {
     SelenideElement editSuccessMessage = $x("//*[text()='Test plan was edited successfully!']");
     SelenideElement deleteSuccessMessage = $x("//*[text()='Test plan Test Plan 1 was deleted successfully!']");
 
-    public TestPlanPage() throws ParserConfigurationException, IOException, SAXException {
+    public TestPlanPage() {
     }
 
     @Step("Creating two mock Test Cases in repository")

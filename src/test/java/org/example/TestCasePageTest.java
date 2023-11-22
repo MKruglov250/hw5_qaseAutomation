@@ -1,6 +1,8 @@
 package org.example;
 
 import lombok.extern.log4j.Log4j2;
+import org.example.model.TestCaseModel;
+import org.example.model.TestCaseModelBuilder;
 import org.example.utilities.LoginUtils;
 import org.json.simple.parser.ParseException;
 import org.testng.Assert;
@@ -19,6 +21,8 @@ public class TestCasePageTest extends BaseTest {
 
     Login login = new Login();
     TestCasePage testCasePage = new TestCasePage();
+    TestCaseModel firstCaseModel = TestCaseModelBuilder.getTestCase(1);
+    TestCaseModel secondCaseModel = TestCaseModelBuilder.getTestCase(2);
 
     public TestCasePageTest() throws ParserConfigurationException, IOException, SAXException {
     }
@@ -31,10 +35,18 @@ public class TestCasePageTest extends BaseTest {
         open("project/QASEAPP");
     }
 
-    @Test(description = "Check Creation of Test Case", groups = "Smoke")
-    public void testCreateTestCase(){
+    @Test(description = "Check Creation of Test Case 1", groups = "Smoke")
+    public void testCreateTestCaseOne(){
         log.info("Asserting Create Test Case One");
-        testCasePage.createTestCase();
+        testCasePage.createTestCase(firstCaseModel);
+        Assert.assertTrue(testCasePage.checkFirstTestCaseExists());
+        log.info("Checked Creation of Test Case One");
+    }
+
+    @Test(description = "Check Creation of Test Case 1", groups = "Smoke")
+    public void testCreateTestCaseTwo(){
+        log.info("Asserting Create Test Case One");
+        testCasePage.createTestCase(secondCaseModel);
         Assert.assertTrue(testCasePage.checkFirstTestCaseExists());
         log.info("Checked Creation of Test Case One");
     }
@@ -60,7 +72,7 @@ public class TestCasePageTest extends BaseTest {
             priority = 3)
     public void testDeleteTestCaseOne(){
         log.info("Checking Test Case Deletion");
-        testCasePage.openTestCase();
+        testCasePage.openFirstTestCase();
         testCasePage.deleteTestCase();
         testCasePage.confirmDeletion();
         boolean deleteMessageExists = testCasePage.checkDeleteMessage();
