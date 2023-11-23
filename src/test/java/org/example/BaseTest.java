@@ -42,12 +42,12 @@ public class BaseTest {
     public void before() throws IOException {
         log.info("Starting configuring web driver");
         getFileBytes("config.properties");
-        Configuration.baseUrl = "https://app.qase.io/";
+        Configuration.baseUrl = PropertyReader.getProperty("Baseurl");
 //        if (sBrowserType != null){
 //            Configuration.browser = sBrowserType;
 //        } else {}
-        Configuration.browser = PropertyReader.getBrowserProperty();
-        Configuration.headless = false;
+        Configuration.browser = PropertyReader.getProperty("Browser");
+        Configuration.headless = Boolean.getBoolean(PropertyReader.getProperty("Headless"));
         open(".");
 
         getWebDriver().manage().window().maximize();

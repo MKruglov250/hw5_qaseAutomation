@@ -36,28 +36,4 @@ public abstract class PropertyReader {
         return Integer.parseInt(getProperty("Timeout"));
     }
 
-    @Step("Get Admin First Name from local properties storage")
-    public static String getAdminFirstNameProperty( ) throws FileNotFoundException {
-        return getProperty("AdminFirstName");
-    }
-
-    @Step("Get Admin Last Name from local properties storage")
-    public static String getAdminLastNameProperty( ) throws FileNotFoundException {
-        return getProperty("AdminLastName");
-    }
-
-    @Step("Get Admin Email from local properties storage")
-    public static String getAdminEmailProperty( ) throws FileNotFoundException {
-        return getProperty("AdminEmail");
-    }
-
-    @Step("Get Admin Zip-code from local properties storage")
-    public static String getAdminZipcodeProperty( ) throws FileNotFoundException {
-        return getProperty("AdminUserZipcode");
-    }
-
-    @Step("Get Admin Password from local properties storage")
-    public static String getAdminPasswordProperty( ) throws FileNotFoundException {
-        return getProperty("AdminUserPassword");
-    }
 }
