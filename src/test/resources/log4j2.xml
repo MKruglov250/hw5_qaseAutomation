@@ -4,18 +4,18 @@
         <Console name="STDOUT" target="SYSTEM_OUT">
             <PatternLayout pattern="%m%n"/>
         </Console>
-        <RollingFile name="fileInfoAppender" fileName="logs/qase-info.log"
-              filePattern = "logs/qase-%d{yyyy-MM-dd-%i.log.gz">
+        <File name="fileInfoAppender" fileName="logs/qase-info.log" append="false"
+              filePattern = "logs/qase-info-%d{yyyy-MM-dd}-%i.log.gz">
             <PatternLayout>
                 <Pattern>%d %p %c{1.} [%t] %m%n</Pattern>
             </PatternLayout>
-        </RollingFile>
-        <RollingFile name="fileDebugAppender" fileName="logs/qase-debug.log"
-        filePattern="logs/qase-%d{yyyy-MM-dd}-%i.log.gz">
+        </File>
+        <File name="fileDebugAppender" fileName="logs/qase-debug.log" append="false"
+        filePattern="logs/qase-debug-%d{yyyy-MM-dd}-%i.log.gz">
             <PatternLayout>
                 <Pattern>%d %p %c{1.} [%t] %m%n</Pattern>
             </PatternLayout>
-        </RollingFile>
+        </File>
     </Appenders>
     <Loggers>
         <Root level="debug">
