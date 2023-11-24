@@ -2,11 +2,10 @@ package org.example;
 
 import io.qameta.allure.TmsLink;
 import lombok.extern.log4j.Log4j2;
+import org.example.model.TestCaseModel;
 import org.example.model.TestCaseModelBuilder;
 import org.example.model.TestPlanModel;
 import org.example.model.TestPlanModelBuilder;
-import org.example.utilities.LoginUtils;
-import org.example.utilities.TestPlanPageUtils;
 import org.json.simple.parser.ParseException;
 import org.testng.Assert;
 import org.testng.annotations.*;
@@ -15,51 +14,56 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 
-import static com.codeborne.selenide.Selenide.open;
-
 @Log4j2
 public class TestPlanPageTest extends BaseTest {
 
     TestPlanPage testPlanPage = new TestPlanPage();
     Login login = new Login();
-    static TestPlanModel testPlanModel = TestPlanModelBuilder
+    TestPlanModel testPlanModel = TestPlanModelBuilder
             .getTestPlan("Test Plan 1", "Simple description");
-    static TestPlanModel realTestPlan = TestPlanModelBuilder
+    TestPlanModel realTestPlan = TestPlanModelBuilder
             .getTestPlan("Real e2e plan", "Complicated desc");
+    TestCaseModel mockCaseOne = TestCaseModelBuilder.getTestCase();
+    TestCaseModel mockCaseTwo = TestCaseModelBuilder.getTestCase();
 
     public TestPlanPageTest() throws IOException, ParseException {
         super();
     }
 
     @BeforeClass(description = "Create mock test cases", alwaysRun = true)
-    public void createMockTestCases() throws IOException, ParseException {
-        login.loginToSiteValid();
-        testPlanPage.createMockTestCases();
+    public void createMockTestCases() {
+        log.info("Creating Mock Test Cases before test");
+        loginPageSteps.loginToSite(validUser);
+        testCasePageSteps.openQaseProject();
+        testCasePageSteps.createMockTestCase(mockCaseOne);
+        testCasePageSteps.createMockTestCase(mockCaseTwo);
         log.info("Created mock test cases");
-        LoginUtils.logout();
+        loginPageSteps.logoutFromSite();
     }
 
 
     @BeforeMethod(description = "Login before performing Test Case module tests",
             alwaysRun = true)
-    public void beforeMethod() throws IOException, ParseException {
-        login.loginToSiteValid();
-        log.info("Logged in to Qase.io");
-        open("plan/QASEAPP");
+    public void beforeMethod() {
+        log.info("Logging in");
+        loginPageSteps.loginToSite(validUser);
+        testCasePageSteps.openQaseProject();
+        testPlanPageSteps.openTestPlans();
     }
 
     @TmsLink("QAT-5")
     @Test(description = "Check Create Test Plan", groups = "Smoke")
     public void checkCreateTestPlan(){
         log.info("Checking Create Test Plan 1");
-        Assert.assertTrue(testPlanPage.createTestPlan(testPlanModel));
+        Assert.assertTrue(testPlanPageSteps.createTestPlan(testPlanModel));
     }
 
     @TmsLink("QAT-6")
     @Test(description = "Check Read Test Plan", groups = "Smoke")
     public void checkReadTestPlanOne(){
         log.info("Checking Read Test Plan 1");
-        Assert.assertEquals(testPlanPage.readTestPlan("Test Plan 1"), "Simple description");
+        Assert.assertEquals(testPlanPageSteps.readTestPlan(testPlanModel.getTitle()),
+                "Simple description");
 
     }
 
@@ -68,7 +72,7 @@ public class TestPlanPageTest extends BaseTest {
             priority = 1)
     public void checkEditTestPlanOne(){
         log.info("Checking Edit Test Plan 1");
-        Assert.assertTrue(testPlanPage.editTestPlan("Test Plan 1"));
+        Assert.assertTrue(testPlanPageSteps.editTestPlan(testPlanModel.getTitle()));
     }
 
     @TmsLink("QAT-8")
@@ -76,7 +80,7 @@ public class TestPlanPageTest extends BaseTest {
             priority = 2)
     public void checkDeleteTestPlan(){
         log.info("Checking Delete Test Plan 1");
-        Assert.assertTrue(testPlanPage.deleteTestPlan("Test Plan 1"));
+        Assert.assertTrue(testPlanPageSteps.deleteTestPlan(testPlanModel.getTitle()));
     }
 
     @Test(description = "End to end: Create Test Plan with complete Test Cases",
@@ -98,16 +102,18 @@ public class TestPlanPageTest extends BaseTest {
 
     @AfterMethod(description = "Logging out after performing test", alwaysRun = true)
     public void logout(){
-        LoginUtils.logout();
+        loginPageSteps.logoutFromSite();
     }
 
     @AfterClass(description = "Deleting Mock Test Cases", alwaysRun = true)
     public void deleteMockCases() throws IOException, ParseException {
         login.loginToSiteValid();
-        TestPlanPageUtils.deleteMockTestCases();
+        testCasePageSteps.openQaseProject();
+        testCasePageSteps.deleteTestCase(mockCaseOne.getTitle());
+        testCasePageSteps.deleteTestCase(mockCaseTwo.getTitle());
         TestCaseModelBuilder.mockTestCases = 0;
         log.info("Deleted mock test cases");
-        LoginUtils.logout();
+        loginPageSteps.logoutFromSite();
     }
 
 }
