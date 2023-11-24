@@ -27,7 +27,8 @@ public class TestPlanPageTest extends BaseTest {
     static TestPlanModel realTestPlan = TestPlanModelBuilder
             .getTestPlan("Real e2e plan", "Complicated desc");
 
-    public TestPlanPageTest() {
+    public TestPlanPageTest() throws IOException, ParseException {
+        super();
     }
 
     @BeforeClass(description = "Create mock test cases", alwaysRun = true)

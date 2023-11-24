@@ -71,7 +71,7 @@ public class LoginPage {
     }
 
     @Step("Open Qase Project")
-    public void clickQaseProject(){
+    public void openQaseProject(){
         log.debug("Opening Qase project");
         projectQaseControl.click();
     }

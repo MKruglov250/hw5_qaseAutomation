@@ -4,8 +4,14 @@ import com.codeborne.selenide.Configuration;
 import io.qameta.allure.Attachment;
 import io.qameta.allure.Step;
 import lombok.extern.log4j.Log4j2;
+import org.example.model.UserModel;
+import org.example.model.UserModelBuilder;
+import org.example.pagesteps.steps.LoginPageSteps;
+import org.example.pagesteps.steps.TestCasePageSteps;
+import org.example.pagesteps.steps.TestPlanPageSteps;
 import org.example.utilities.OurListener;
 import org.example.utilities.PropertyReader;
+import org.json.simple.parser.ParseException;
 import org.testng.annotations.*;
 
 import java.io.IOException;
@@ -23,6 +29,15 @@ import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
 @Listeners(OurListener.class)
 @Log4j2
 public class BaseTest {
+
+    UserModel validUser = UserModelBuilder.getValidUser();
+    UserModel badUser = UserModelBuilder.getIncorrectUser();
+    LoginPageSteps loginPageSteps = new LoginPageSteps();
+    TestCasePageSteps testCasePageSteps = new TestCasePageSteps();
+    TestPlanPageSteps testPlanPageSteps = new TestPlanPageSteps();
+
+    public BaseTest() throws IOException, ParseException {
+    }
 
     @BeforeSuite
     public void setSystemProperties(){

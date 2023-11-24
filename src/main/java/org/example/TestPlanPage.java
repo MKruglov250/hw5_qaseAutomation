@@ -38,7 +38,6 @@ public class TestPlanPage {
 
     public void createRealTestCases() throws ParserConfigurationException, IOException, SAXException {
         log.info("Creating test cases with full data");
-        open("project/QASEAPP");
         TestPlanPageUtils.createRealTestCases();
     }
 

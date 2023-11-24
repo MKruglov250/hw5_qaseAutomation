@@ -4,6 +4,7 @@ import io.qameta.allure.TmsLink;
 import lombok.extern.log4j.Log4j2;
 import org.example.model.TestCaseModel;
 import org.example.model.TestCaseModelBuilder;
+import org.example.pagesteps.TestCasePage;
 import org.example.utilities.LoginUtils;
 import org.json.simple.parser.ParseException;
 import org.testng.Assert;
@@ -15,41 +16,36 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 
-import static com.codeborne.selenide.Selenide.open;
 
 @Log4j2
 public class TestCasePageTest extends BaseTest {
 
-    Login login = new Login();
-    TestCasePage testCasePage = new TestCasePage();
     TestCaseModel firstCaseModel = TestCaseModelBuilder.getTestCase(1);
     TestCaseModel secondCaseModel = TestCaseModelBuilder.getTestCase(2);
 
-    public TestCasePageTest() throws ParserConfigurationException, IOException, SAXException {
+    public TestCasePageTest() throws ParserConfigurationException, IOException, SAXException, ParseException {
+        super();
     }
 
     @BeforeMethod(description = "Login before performing Test Case module tests",
     alwaysRun = true)
-    public void beforeMethod() throws IOException, ParseException {
-        login.loginToSiteValid();
+    public void beforeMethod() {
+        loginPageSteps.loginToSite(validUser);
         log.info("Logged in to Qase.io");
-        open("project/QASEAPP");
     }
 
     @TmsLink("QAT-1")
     @Test(description = "Check Creation of Test Case 1", groups = "Smoke")
     public void testCreateTestCaseOne(){
         log.info("Checking Create Test Case One");
-        testCasePage.createTestCase(firstCaseModel);
-        Assert.assertTrue(testCasePage.checkTestCaseExists(firstCaseModel.getTitle()));
+        Assert.assertTrue(testCasePageSteps.createTestCase(firstCaseModel));
     }
 
     @TmsLink("QAT-1")
     @Test(description = "Check Creation of Test Case 2", groups = "Smoke")
     public void testCreateTestCaseTwo(){
-        log.info("Checking Create Test Case One");
-        testCasePage.createTestCase(secondCaseModel);
-        Assert.assertTrue(testCasePage.checkTestCaseExists(secondCaseModel.getTitle()));
+        log.info("Checking Create Test Case Two");
+        Assert.assertTrue(testCasePageSteps.createTestCase(secondCaseModel));
     }
 
     @TmsLink("QAT-2")
@@ -57,7 +53,7 @@ public class TestCasePageTest extends BaseTest {
             priority = 1)
     public void testReadTestCaseOne(){
         log.info("Checking Read Test Case One");
-        Assert.assertEquals(testCasePage.checkTestCaseRead(firstCaseModel.getTitle()),
+        Assert.assertEquals(testCasePageSteps.checkTestCaseRead(firstCaseModel.getTitle()),
                 "First Test Case");
     }
 
@@ -66,7 +62,7 @@ public class TestCasePageTest extends BaseTest {
             priority = 2)
     public void testEditTestCaseOne(){
         log.info("Checking Edit Test Case One");
-        Assert.assertEquals(testCasePage.checkEditTestCase(firstCaseModel.getTitle()),
+        Assert.assertEquals(testCasePageSteps.checkEditTestCase(firstCaseModel.getTitle()),
                 "Brand-new edited description");
     }
 
@@ -75,8 +71,7 @@ public class TestCasePageTest extends BaseTest {
             priority = 3)
     public void testDeleteTestCaseOne(){
         log.info("Checking Delete Test Case 1");
-        testCasePage.deleteTestCase(firstCaseModel.getTitle());
-        Assert.assertTrue(testCasePage.checkDeleteMessage());
+        Assert.assertTrue(testCasePageSteps.deleteTestCase(firstCaseModel.getTitle()));
     }
 
     @TmsLink("QAT-4")
@@ -84,8 +79,7 @@ public class TestCasePageTest extends BaseTest {
             priority = 3)
     public void testDeleteTestCaseTwo(){
         log.info("Checking Delete Test Case 2");
-        testCasePage.deleteTestCase(secondCaseModel.getTitle());
-        Assert.assertTrue(testCasePage.checkDeleteMessage());
+        Assert.assertTrue(testCasePageSteps.deleteTestCase(secondCaseModel.getTitle()));
     }
 
     @AfterMethod(description = "Logging out after performing test", alwaysRun = true)

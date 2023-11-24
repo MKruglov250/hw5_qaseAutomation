@@ -2,9 +2,6 @@ package org.example;
 
 import io.qameta.allure.TmsLink;
 import lombok.extern.log4j.Log4j2;
-import org.example.model.UserModel;
-import org.example.model.UserModelBuilder;
-import org.example.pagesteps.steps.LoginPageSteps;
 import org.json.simple.parser.ParseException;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
@@ -17,11 +14,6 @@ import static com.codeborne.selenide.Selenide.open;
 
 @Log4j2
 public class LoginTest extends BaseTest {
-
-    Login loginPage = new Login();
-    LoginPageSteps loginPageSteps = new LoginPageSteps();
-    UserModel validUser = UserModelBuilder.getValidUser();
-    UserModel badUser = UserModelBuilder.getIncorrectUser();
 
     public LoginTest() throws IOException, ParseException {
     }
@@ -62,7 +54,7 @@ public class LoginTest extends BaseTest {
         Assert.assertFalse(loginPageSteps.loginToSite(badUser));
     }
 
-    @AfterClass
+    @AfterClass(alwaysRun = true)
     public void logout(){
         log.info("Login Page steps complete, logging out");
         loginPageSteps.logoutFromSite();
