@@ -25,8 +25,10 @@ public class TestPlanPageTest extends BaseTest {
             .getTestPlan("Real e2e plan", "Complicated desc");
     TestCaseModel mockCaseOne = TestCaseModelBuilder.getTestCase();
     TestCaseModel mockCaseTwo = TestCaseModelBuilder.getTestCase();
+    TestCaseModel firstCaseModel = TestCaseModelBuilder.getTestCase(1);
+    TestCaseModel secondCaseModel = TestCaseModelBuilder.getTestCase(2);
 
-    public TestPlanPageTest() throws IOException, ParseException {
+    public TestPlanPageTest() throws IOException, ParseException, ParserConfigurationException, SAXException {
         super();
     }
 
@@ -85,18 +87,17 @@ public class TestPlanPageTest extends BaseTest {
 
     @Test(description = "End to end: Create Test Plan with complete Test Cases",
             groups = "E2E", priority = 4)
-    public void checkTestPlanWithCases() throws ParserConfigurationException, IOException, SAXException {
+    public void checkTestPlanWithCases() {
         log.info("Creating test plan with First Test Case & Second Test Case");
-        testPlanPage.createRealTestCases();
-        testPlanPage.createRealPlan(realTestPlan);
-        log.info("Checking description of real test plan");
-        Assert.assertEquals(testPlanPage.readTestPlan("Real e2e plan"),
-                                                "Complicated desc");
+        testCasePageSteps.openRepository();
+        testCasePageSteps.createTestCase(firstCaseModel);
+        testCasePageSteps.createTestCase(secondCaseModel);
+        testPlanPageSteps.createEndtoendPlan(realTestPlan);
+        testPlanPageSteps.readTestPlan(realTestPlan.getTitle());
         testPlanPage.switchToTestCases();
-        log.info("Checking test cases are added, description is correct");
-        Assert.assertEquals(testPlanPage.getTestCaseDescription("First Test Case")
+        Assert.assertEquals(testPlanPage.getTestCaseDescription(firstCaseModel.getTitle())
                 ,"Description of First Test Case");
-        Assert.assertEquals(testPlanPage.getTestCaseDescription("Second Test Case")
+        Assert.assertEquals(testPlanPage.getTestCaseDescription(secondCaseModel.getTitle())
                 ,"Second Test Case description");
     }
 
@@ -111,6 +112,8 @@ public class TestPlanPageTest extends BaseTest {
         testCasePageSteps.openQaseProject();
         testCasePageSteps.deleteTestCase(mockCaseOne.getTitle());
         testCasePageSteps.deleteTestCase(mockCaseTwo.getTitle());
+        testCasePageSteps.deleteTestCase(firstCaseModel.getTitle());
+        testCasePageSteps.deleteTestCase(secondCaseModel.getTitle());
         TestCaseModelBuilder.mockTestCases = 0;
         log.info("Deleted mock test cases");
         loginPageSteps.logoutFromSite();

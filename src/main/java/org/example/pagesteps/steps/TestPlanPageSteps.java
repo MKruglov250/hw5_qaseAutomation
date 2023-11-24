@@ -36,8 +36,11 @@ public class TestPlanPageSteps extends BaseSteps {
     @Step("Create e2e test plan")
     public boolean createEndtoendPlan(TestPlanModel testPlanModel){
         log.info("Creating Test Plan: " + testPlanModel.getTitle());
+        testPlanPage.openTestPlans();
         testPlanPage.clickCreateTestPlan();
         testPlanPage.setTitle(testPlanModel);
+        testPlanPage.setDescription(testPlanModel);
+        testPlanPage.clickAddTestCases();
         testPlanPage.selectSuite("First Suite");
         testPlanPage.selectTestCase("First Test Case");
         testPlanPage.selectSuite("Second Suite");
