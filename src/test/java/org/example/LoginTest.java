@@ -23,22 +23,6 @@ public class LoginTest extends BaseTest {
         open("login");
     }
 
-
-//    public void checkValidLogin() throws IOException, ParseException {
-//        log.info("Checking login with valid credentials");
-//        Assert.assertTrue(loginPage.loginToSiteValid());
-//    }
-//
-    //    public void checkInvalidLogin() {
-//        log.info("Checking login with valid credentials");
-//        Assert.assertFalse(loginPage.loginToSiteInvalid());
-//    }
-//
-//    @AfterClass(alwaysRun = true)
-//    public void logout(){
-//        LoginUtils.logout();
-//    }
-
     @TmsLink("QAT-9")
     @Test(description = "Checking Login To Website with valid credentials", groups = "Smoke",
             priority = 1)

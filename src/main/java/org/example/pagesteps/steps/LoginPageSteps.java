@@ -9,27 +9,32 @@ import org.example.pagesteps.LoginPage;
 public class LoginPageSteps extends BaseSteps {
 
     @Step("Login to site")
-    public boolean loginToSite(UserModel user){
-        log.info("Logging with user email: " + user.getEmail());
+    public void login(UserModel user){
+        log.info("Logging in");
         loginPage.setEmail(user);
         loginPage.setPassword(user);
         loginPage.clickLogin();
+    }
+
+
+    @Step("Login with assertion")
+    public boolean loginToSite(UserModel user){
+        log.info("Logging with user email: " + user.getEmail());
+        login(user);
         boolean loginSuccessful = loginPage.loginSuccessful();
         log.info("Login succesful: " + loginSuccessful);
         return loginSuccessful;
     }
 
     @Step("Logout from site")
-    public boolean logoutFromSite(){
+    public void logoutFromSite(){
         log.info("Logging out");
         if(LoginPage.menuButton.exists()) {
             loginPage.clickMenuButton();
             if (LoginPage.logoutButton.exists()) {
                 loginPage.clickLogoutButton();
-            }
-        }
-        boolean logoutSuccessful = loginPage.checkLogoutSuccesful();
-        log.info("User logged out: " + logoutSuccessful);
-        return logoutSuccessful;
+                log.info("Logout successful");
+            } else log.info("Logout failed :(");
+        } else log.info("Logout failed :(");
     }
 }

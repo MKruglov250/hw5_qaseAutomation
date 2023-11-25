@@ -71,7 +71,7 @@ public class BaseTest {
         log.info("Web driver configuration complete");
     }
 
-    @AfterTest(description = "Closing web drivers", alwaysRun = true)
+    @AfterSuite(description = "Closing web drivers", alwaysRun = true)
     public void afterTest() {
         closeWebDriver();
     }

@@ -1,5 +1,6 @@
 package org.example;
 
+import com.codeborne.selenide.Selenide;
 import io.qameta.allure.TmsLink;
 import lombok.extern.log4j.Log4j2;
 import org.example.model.TestCaseModel;
@@ -35,7 +36,7 @@ public class TestPlanPageTest extends BaseTest {
     @BeforeClass(description = "Create mock test cases", alwaysRun = true)
     public void createMockTestCases() {
         log.info("Creating Mock Test Cases before test");
-        loginPageSteps.loginToSite(validUser);
+        loginPageSteps.login(validUser);
         testCasePageSteps.openQaseProject();
         testCasePageSteps.createMockTestCase(mockCaseOne);
         testCasePageSteps.createMockTestCase(mockCaseTwo);
@@ -48,7 +49,7 @@ public class TestPlanPageTest extends BaseTest {
             alwaysRun = true)
     public void beforeMethod() {
         log.info("Logging in");
-        loginPageSteps.loginToSite(validUser);
+        loginPageSteps.login(validUser);
         testCasePageSteps.openQaseProject();
         testPlanPageSteps.openTestPlans();
     }
@@ -106,16 +107,22 @@ public class TestPlanPageTest extends BaseTest {
         loginPageSteps.logoutFromSite();
     }
 
-    @AfterClass(description = "Deleting Mock Test Cases", alwaysRun = true)
-    public void deleteMockCases() throws IOException, ParseException {
+    @AfterClass(description = "Deleting Mock Test Cases and E2E Test Plan", alwaysRun = true)
+    public void deleteMockCasesAndRealPlan() throws IOException, ParseException {
+        log.info("Deleting mock cases and E2E test plan");
         login.loginToSiteValid();
         testCasePageSteps.openQaseProject();
         testCasePageSteps.deleteTestCase(mockCaseOne.getTitle());
         testCasePageSteps.deleteTestCase(mockCaseTwo.getTitle());
+        Selenide.refresh();
         testCasePageSteps.deleteTestCase(firstCaseModel.getTitle());
         testCasePageSteps.deleteTestCase(secondCaseModel.getTitle());
         TestCaseModelBuilder.mockTestCases = 0;
         log.info("Deleted mock test cases");
+        Selenide.refresh();
+        testPlanPageSteps.openTestPlans();
+        testPlanPageSteps.deleteTestPlan(realTestPlan.getTitle());
+        log.info("Deleted E2E Test Plan");
         loginPageSteps.logoutFromSite();
     }
 

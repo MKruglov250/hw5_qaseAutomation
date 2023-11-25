@@ -4,7 +4,6 @@ import io.qameta.allure.TmsLink;
 import lombok.extern.log4j.Log4j2;
 import org.example.model.TestCaseModel;
 import org.example.model.TestCaseModelBuilder;
-import org.example.pagesteps.TestCasePage;
 import org.example.utilities.LoginUtils;
 import org.json.simple.parser.ParseException;
 import org.testng.Assert;
@@ -30,8 +29,9 @@ public class TestCasePageTest extends BaseTest {
     @BeforeMethod(description = "Login before performing Test Case module tests",
     alwaysRun = true)
     public void beforeMethod() {
-        loginPageSteps.loginToSite(validUser);
+        loginPageSteps.login(validUser);
         log.info("Logged in to Qase.io");
+        testCasePageSteps.openQaseProject();
     }
 
     @TmsLink("QAT-1")
