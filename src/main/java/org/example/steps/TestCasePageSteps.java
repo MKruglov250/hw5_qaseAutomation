@@ -1,4 +1,4 @@
-package org.example.pagesteps.steps;
+package org.example.steps;
 
 import lombok.extern.log4j.Log4j2;
 import io.qameta.allure.Step;

@@ -1,4 +1,4 @@
-package org.example.pagesteps;
+package org.example;
 
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;

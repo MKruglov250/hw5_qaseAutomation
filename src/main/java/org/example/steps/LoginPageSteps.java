@@ -1,9 +1,9 @@
-package org.example.pagesteps.steps;
+package org.example.steps;
 
 import io.qameta.allure.Step;
 import lombok.extern.log4j.Log4j2;
+import org.example.LoginPage;
 import org.example.model.UserModel;
-import org.example.pagesteps.LoginPage;
 
 @Log4j2
 public class LoginPageSteps extends BaseSteps {

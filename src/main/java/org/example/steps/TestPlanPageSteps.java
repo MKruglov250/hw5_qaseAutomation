@@ -1,4 +1,4 @@
-package org.example.pagesteps.steps;
+package org.example.steps;
 
 import com.codeborne.selenide.SelenideElement;
 import com.github.javafaker.Faker;
