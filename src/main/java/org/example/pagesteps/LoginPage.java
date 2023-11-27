@@ -70,11 +70,4 @@ public class LoginPage {
         return (!projectQaseControl.exists());
     }
 
-    @Step("Open Qase Project")
-    public void openQaseProject(){
-        log.debug("Opening Qase project");
-        projectQaseControl.click();
-    }
-
-
 }

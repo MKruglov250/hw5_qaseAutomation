@@ -7,6 +7,7 @@ import org.example.model.TestCaseModel;
 import org.example.model.TestCaseModelBuilder;
 import org.example.model.TestPlanModel;
 import org.example.model.TestPlanModelBuilder;
+import org.example.pagesteps.TestPlanPage;
 import org.json.simple.parser.ParseException;
 import org.testng.Assert;
 import org.testng.annotations.*;
@@ -18,8 +19,7 @@ import java.io.IOException;
 @Log4j2
 public class TestPlanPageTest extends BaseTest {
 
-    TestPlanPage testPlanPage = new TestPlanPage();
-    Login login = new Login();
+    TestPlanPage testPlanPage = new org.example.pagesteps.TestPlanPage();
     TestPlanModel testPlanModel = TestPlanModelBuilder
             .getTestPlan("Test Plan 1", "Simple description");
     TestPlanModel realTestPlan = TestPlanModelBuilder
@@ -108,9 +108,9 @@ public class TestPlanPageTest extends BaseTest {
     }
 
     @AfterClass(description = "Deleting Mock Test Cases and E2E Test Plan", alwaysRun = true)
-    public void deleteMockCasesAndRealPlan() throws IOException, ParseException {
+    public void deleteMockCasesAndRealPlan(){
         log.info("Deleting mock cases and E2E test plan");
-        login.loginToSiteValid();
+        loginPageSteps.loginToSite(validUser);
         testCasePageSteps.openQaseProject();
         testCasePageSteps.deleteTestCase(mockCaseOne.getTitle());
         testCasePageSteps.deleteTestCase(mockCaseTwo.getTitle());

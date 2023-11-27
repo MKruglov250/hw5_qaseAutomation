@@ -152,18 +152,17 @@ public class TestPlanPage {
         testCasesTab.click();
     }
 
-    @Step("Select Test Case")
-    public void switchToCase(String caseName){
-        log.debug("Select test case: " + caseName);
-        SelenideElement caseCheckbox = $x(String.format("//div[@class='suitecase-info']/p[text()='%s']" +
-                "/parent::div/parent::div//label",caseName));
-        caseCheckbox.click();
+    @Step("Check test case exists")
+    public void openTestCase(String caseName){
+        log.debug("Opening Test Case");
+        $x(String.format("//p[text()='%s']",caseName)).click();
     }
 
     @Step("Switch to Test Cases Tab")
-    public String getTestCaseDescription(){
+    public String getTestCaseDescription(String caseName){
         log.debug("Getting description for selected test case");
-        return testCaseDescription.getValue();
+        openTestCase(caseName);
+        return testCaseDescription.getText();
     }
 
 

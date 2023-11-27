@@ -4,7 +4,6 @@ import io.qameta.allure.TmsLink;
 import lombok.extern.log4j.Log4j2;
 import org.example.model.TestCaseModel;
 import org.example.model.TestCaseModelBuilder;
-import org.example.utilities.LoginUtils;
 import org.json.simple.parser.ParseException;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
@@ -84,7 +83,7 @@ public class TestCasePageTest extends BaseTest {
 
     @AfterMethod(description = "Logging out after performing test", alwaysRun = true)
     public void logout(){
-        LoginUtils.logout();
+        loginPageSteps.logoutFromSite();
     }
 
 }
