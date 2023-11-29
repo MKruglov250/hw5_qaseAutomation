@@ -3,6 +3,7 @@ package org.example;
 import com.codeborne.selenide.Configuration;
 import io.qameta.allure.Attachment;
 import io.qameta.allure.Step;
+import io.restassured.RestAssured;
 import lombok.extern.log4j.Log4j2;
 import org.example.model.UserModel;
 import org.example.model.UserModelBuilder;
@@ -35,9 +36,11 @@ public class BaseTest {
     LoginPageSteps loginPageSteps = new LoginPageSteps();
     TestCasePageSteps testCasePageSteps = new TestCasePageSteps();
     TestPlanPageSteps testPlanPageSteps = new TestPlanPageSteps();
+    Requests requests = new Requests();
 
 
     public BaseTest() throws IOException, ParseException {
+        RestAssured.baseURI="https://api.qase.io/v1";
     }
 
     @BeforeSuite

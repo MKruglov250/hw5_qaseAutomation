@@ -35,11 +35,12 @@ public class Requests {
     }
 
     @Step("Create Mock Test Case")
-    public Response createMockTestCase(String name){
+    public Response createMockTestCase(String name, int suite){
         log.info("Creating Mock Test Case with POST Request");
         Response response = given().contentType("application/json")
                 .accept("application/json").header("Token",token)
-                .body(String.format("{\"title\":\"%s\",\"description\":\"lala\"}",name))
+                .body(String.format("{\"title\":\"%s\",\"description\":\"lala\"," +
+                        "\"suite_id\":\"%d\"}",name, suite))
                 .when().post("/case/QASEAPP");
         log.debug("Test Case Created: " + response.jsonPath().get("result.id"));
         return response;
@@ -116,22 +117,4 @@ public class Requests {
         return response;
     }
 
-//    @Step("Create Test Case from model")
-
-    /*
-
-    Create Test Case (Code)
-    Read Test Case (Code, Body, Model)
-    Update Test Case (Code, Body, Model)
-    Delete Test Case (Code)
-
-    Create Test Plan (Code)
-    Read Test Plan (Code, Body, Model)
-    Update Test Plan (Code, Body, Model)
-    Delete Test Plan (Code)
-
-    Create Mock Test Cases (Code)
-    Delete Mock Test Cases (Code)
-
-     */
 }

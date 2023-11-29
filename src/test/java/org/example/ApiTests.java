@@ -1,6 +1,5 @@
 package org.example;
 
-import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import lombok.extern.log4j.Log4j2;
@@ -16,25 +15,23 @@ import java.io.File;
 import java.io.IOException;
 
 @Log4j2
-public class ApiTests {
+public class ApiTests extends BaseTest{
 
-    Requests requests = new Requests();
     static int createdCaseId = 0;
     static int mockOneId = 0;
     static int mockTwoId = 0;
     static int createPlanId = 0;
     public ApiTests() throws IOException, ParseException {
-        RestAssured.baseURI="https://api.qase.io/v1";
     }
 
     @BeforeClass(description = "Create Mock Cases")
     public void createMockCases(){
         log.info("Create mock cases before Test Plan tests");
-        Response response = requests.createMockTestCase("Haha 1");
+        Response response = requests.createMockTestCase("Haha 1",3);
         log.info("Status code is: " + response.statusCode());
         mockOneId = response.jsonPath().get("result.id");
         log.info("Created case: " + mockOneId);
-        response = requests.createMockTestCase("Hoho 2");
+        response = requests.createMockTestCase("Hoho 2",3);
         log.info("Status code is: " + response.statusCode());
         mockTwoId = response.jsonPath().get("result.id");
         log.info("Created case: " + mockTwoId);
