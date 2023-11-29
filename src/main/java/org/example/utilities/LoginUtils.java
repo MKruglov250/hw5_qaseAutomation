@@ -27,4 +27,11 @@ public class LoginUtils {
         return ((JSONObject) obj).get("password").toString();
     }
 
+    @Step("Get WebAPI Token")
+    public static String getToken() throws IOException, ParseException {
+        JSONParser parser = new JSONParser();
+        Object obj = parser.parse(new FileReader("src/resources/credentials.json"));
+        return ((JSONObject) obj).get("token").toString();
+    }
+
 }

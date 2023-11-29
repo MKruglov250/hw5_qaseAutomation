@@ -1,0 +1,27 @@
+{
+  "title": "First Test Case",
+  "description": "Description of First Test Case",
+  "preconditions": "Pre-condition that is very funny",
+  "postconditions": "Post-condition extremely exciting",
+  "severity": 3,
+  "priority": 3,
+  "behavior": 2,
+  "type": 2,
+  "layer": 2,
+  "is_flaky": 1,
+  "suite_id": 3,
+  "automation": 0,
+  "status": 0,
+  "steps": [
+    {
+      "action": "Do lucky action",
+      "expected_result": "Check lucky result",
+      "data": "Enter lucky data"
+    },
+    {
+      "action": "Perform silly move",
+      "expected_result": "Verify silly consequence",
+      "data": "Set silly values"
+    }
+  ]
+}
