@@ -57,7 +57,7 @@ public class BaseTest {
     }
 
 //    @Parameters({"BrowserType"})
-    @BeforeClass(alwaysRun = true, description = "Initialize testing for Qase.io")
+    @BeforeSuite(alwaysRun = true, description = "Initialize testing for Qase.io")
     public void before() throws IOException {
         log.info("Starting configuring web driver");
         getFileBytes("config.properties");

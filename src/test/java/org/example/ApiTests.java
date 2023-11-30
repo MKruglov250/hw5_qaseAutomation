@@ -1,5 +1,6 @@
 package org.example;
 
+import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import lombok.extern.log4j.Log4j2;
@@ -8,23 +9,28 @@ import org.json.simple.parser.ParseException;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import static org.hamcrest.Matchers.*;
+import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 
 import java.io.File;
 import java.io.IOException;
 
+@Listeners()
 @Log4j2
-public class ApiTests extends BaseTest{
+public class ApiTests {
 
     static int createdCaseId = 0;
     static int mockOneId = 0;
     static int mockTwoId = 0;
     static int createPlanId = 0;
+    Requests requests = new Requests();
     public ApiTests() throws IOException, ParseException {
+        RestAssured.baseURI="https://api.qase.io/v1";
     }
 
-    @BeforeClass(description = "Create Mock Cases")
+    @BeforeClass(description = "Create Mock Cases", alwaysRun = true)
     public void createMockCases(){
         log.info("Create mock cases before Test Plan tests");
         Response response = requests.createMockTestCase("Haha 1",3);
@@ -37,7 +43,7 @@ public class ApiTests extends BaseTest{
         log.info("Created case: " + mockTwoId);
     }
 
-    @AfterClass(description = "Delete Mock Cases")
+    @AfterClass(description = "Delete Mock Cases", alwaysRun = true)
     public void deleteMockCases(){
         log.info("Deleting mock cases after Test Plan tests");
         log.info("Deleting case: " + mockOneId);
@@ -49,7 +55,7 @@ public class ApiTests extends BaseTest{
         log.info("Mock Cases Deleted");
     }
 
-    @Test(description="WebAPI: Check POST Create New Test Case")
+    @Test(description="WebAPI: POST Create Test Case, check status code", alwaysRun = true)
     public void createTestCase() throws IOException, ParseException {
         log.info("Checking POST request to Create New Test Case");
         String casePath = "src/test/resources/references/testCaseRef.json";
@@ -60,7 +66,21 @@ public class ApiTests extends BaseTest{
         Assert.assertEquals(statusCode, HttpStatus.SC_OK);
     }
 
-    @Test(description="Read Test Case", priority = 1)
+    @Test(description = "WebAPI: GET Read Test Case, check structure",
+            priority = 1, alwaysRun = true)
+    public void readTestCaseModel(){
+        log.info("Checking GET Test Case Request, asserting response structure");
+        Response response = requests.readTestCase(createdCaseId);
+        int statusCode = response.statusCode();
+        log.info("Status code is: " + statusCode);
+        Assert.assertEquals(statusCode, HttpStatus.SC_OK);
+        log.info("Check that response matches Test Case structure");
+        response.then().assertThat()
+                .body(matchesJsonSchemaInClasspath("models/testCaseModel.json"));
+    }
+
+    @Test(description="WebAPI: GET Read Test Case, check body values",
+            priority = 1, alwaysRun = true)
     public void readTestCase(){
         log.info("Checking GET request to Read Test Case");
         JsonPath expectedJson = new JsonPath(new File(
@@ -91,7 +111,8 @@ public class ApiTests extends BaseTest{
                 .body("result.steps[1].expected_result",equalTo("Verify silly consequence"));
     }
 
-    @Test(description = "Update Test Case", priority = 2)
+    @Test(description = "WebAPI: PATCH Update Test Case, check description updated",
+            priority = 2, alwaysRun = true)
     public void updateTestCase(){
         log.info("Checking PATCH request to Update Test Case");
         String updateString = "Truly Updated Description";
@@ -104,7 +125,8 @@ public class ApiTests extends BaseTest{
                 .body("result.description", equalTo(updateString));
     }
 
-    @Test(description = "Delete Test Case", priority = 3)
+    @Test(description = "WebAPI: DELETE Test Case, check status code",
+            priority = 3, alwaysRun = true)
     public void deleteTestCase(){
         log.info("Checking DELETE request to Delete Test Case");
         Response response = requests.deleteTestCase(createdCaseId);
@@ -113,7 +135,7 @@ public class ApiTests extends BaseTest{
         Assert.assertEquals(statusCode, HttpStatus.SC_OK);
     }
 
-    @Test(description = "Create Test Plan")
+    @Test(description = "WebAPI: POST Create Test Plan, check status code", alwaysRun = true)
     public void createTestPlan(){
         log.info("Checking POST request to Create Test Plan");
         Response response = requests.createTestPlan("WebAPI Cool Plan"
@@ -124,7 +146,21 @@ public class ApiTests extends BaseTest{
         Assert.assertEquals(statusCode, HttpStatus.SC_OK);
     }
 
-    @Test(description = "Read Test Plan", priority = 1)
+    @Test(description = "WebAPI: GET Read Test Plan, check structure",
+            priority = 1, alwaysRun = true)
+    public void readTestPlanModel(){
+        log.info("Checking GET request to Read Test Plan");
+        Response response = requests.readTestPlan(createPlanId);
+        int statusCode = response.statusCode();
+        log.info("Status code is: " + statusCode);
+        Assert.assertEquals(statusCode, HttpStatus.SC_OK);
+        log.info("Check that response matches Test Case structure");
+        response.then().assertThat()
+                .body(matchesJsonSchemaInClasspath("models/testPlanModel.json"));
+    }
+
+    @Test(description = "WebAPI: GET Read Test Plan, check status code",
+            priority = 1, alwaysRun = true)
     public void readTestPlan(){
         log.info("Checking GET request to Read Test Plan");
         Response response = requests.readTestPlan(createPlanId);
@@ -138,7 +174,8 @@ public class ApiTests extends BaseTest{
                 .body("result.cases[1].case_id", equalTo(mockTwoId));
     }
 
-    @Test(description = "Update Test Plan", priority = 2)
+    @Test(description = "WebAPI: PATCH Update Test Plan, check new description",
+            priority = 2, alwaysRun = true)
     public void updateTestPlan(){
         log.info("Checking PATCH request to Update Test Plan");
         String updateString = "OMG Plan is so WebAPI updated";
@@ -151,7 +188,8 @@ public class ApiTests extends BaseTest{
                 .body("result.description", equalTo(updateString));
     }
 
-    @Test(description = "Delete Test Plan", priority = 3)
+    @Test(description = "WebAPI: DELETE Test Case, check status code",
+            priority = 3, alwaysRun = true)
     public void deleteTestPlan(){
         log.info("Checking DELETE request to Delete Test Case");
         Response response = requests.deleteTestPlan(createPlanId);
