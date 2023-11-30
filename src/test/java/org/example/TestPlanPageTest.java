@@ -42,7 +42,7 @@ public class TestPlanPageTest extends BaseTest {
         log.info("Creating Mock Test Cases before test");
         Response response = requests.createMockTestCase(mockCaseOne.getTitle(), 3);
         mockCaseOneId = response.jsonPath().get("result.id");
-        requests.createMockTestCase(mockCaseTwo.getTitle(), 3);
+        response = requests.createMockTestCase(mockCaseTwo.getTitle(), 3);
         mockCaseTwoId = response.jsonPath().get("result.id");
         log.info("Created Mock Test Cases");
     }
