@@ -1,6 +1,8 @@
 package org.example;
 
 import io.qameta.allure.TmsLink;
+import io.restassured.path.json.JsonPath;
+import io.restassured.response.Response;
 import lombok.extern.log4j.Log4j2;
 import org.example.model.TestCaseModel;
 import org.example.model.TestCaseModelBuilder;
@@ -10,8 +12,10 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.xml.sax.SAXException;
+import static org.hamcrest.Matchers.*;
 
 import javax.xml.parsers.ParserConfigurationException;
+import java.io.File;
 import java.io.IOException;
 
 
@@ -54,6 +58,17 @@ public class TestCasePageTest extends BaseTest {
         log.info("Checking Read Test Case One");
         Assert.assertEquals(testCasePageSteps.checkTestCaseRead(firstCaseModel.getTitle()),
                 "First Test Case");
+    }
+
+    @TmsLink("QAT-2")
+    @Test(description = "Check Read Test Case using WebAPI", groups = "Smoke")
+    public void testReadTestCaseOneApi(){
+        log.info("Checking Read Test Case One using WebAPI");
+        int caseId = testCasePageSteps.checkTestCaseReadDeep(firstCaseModel.getTitle());
+        Response response = requests.readTestCase(caseId);
+        log.info("Status code is: " + response.statusCode());
+        response.then().assertThat()
+                .body("result", hasItems(JsonPath.from(new File("src/test/resources/references/testCaseRef.json")).getMap("")));
     }
 
     @TmsLink("QAT-3")

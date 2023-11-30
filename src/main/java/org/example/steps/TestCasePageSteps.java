@@ -4,6 +4,8 @@ import lombok.extern.log4j.Log4j2;
 import io.qameta.allure.Step;
 import org.example.model.TestCaseModel;
 
+import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
+
 @Log4j2
 public class TestCasePageSteps extends BaseSteps {
 
@@ -57,13 +59,23 @@ public class TestCasePageSteps extends BaseSteps {
         return testCasePage.checkCreateSuccess();
     }
 
-    @Step("Read test case")
+    @Step("Read test case and get name")
     public String checkTestCaseRead(String caseName){
         log.info("Reading Test Case: " + caseName);
         openRepository();
         testCasePage.openTestCase(caseName);
         testCasePage.clickEditCase();
         return testCasePage.titleInput.getValue();
+    }
+
+    @Step("Read test case and get CaseID")
+    public int checkTestCaseReadDeep(String caseName){
+        log.info("Reading Test Case: " + caseName);
+        openRepository();
+        testCasePage.openTestCase(caseName);
+        testCasePage.clickEditCase();
+        return Integer.parseInt(getWebDriver().getCurrentUrl()
+                .replace("https://app.qase.io/case/QASEAPP/edit/",""));
     }
 
     @Step("Edit test case")
