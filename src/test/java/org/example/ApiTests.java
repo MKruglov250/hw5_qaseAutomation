@@ -9,7 +9,6 @@ import org.json.simple.parser.ParseException;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import static org.hamcrest.Matchers.*;
 import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
@@ -17,11 +16,10 @@ import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInC
 import java.io.File;
 import java.io.IOException;
 
-@Listeners()
 @Log4j2
 public class ApiTests {
 
-    static int createdCaseId = 0;
+    static int createdCaseId = 638;
     static int mockOneId = 0;
     static int mockTwoId = 0;
     static int createPlanId = 0;
