@@ -1,7 +1,8 @@
 package org.example;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import io.qameta.allure.TmsLink;
-import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import lombok.extern.log4j.Log4j2;
 import org.example.model.TestCaseModel;
@@ -12,11 +13,12 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.xml.sax.SAXException;
-import static org.hamcrest.Matchers.*;
 
 import javax.xml.parsers.ParserConfigurationException;
-import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 @Log4j2
@@ -24,9 +26,13 @@ public class TestCasePageTest extends BaseTest {
 
     TestCaseModel firstCaseModel = TestCaseModelBuilder.getTestCase(1);
     TestCaseModel secondCaseModel = TestCaseModelBuilder.getTestCase(2);
+    Gson gson;
 
     public TestCasePageTest() throws ParserConfigurationException, IOException, SAXException, ParseException {
         super();
+        gson = new GsonBuilder()
+                .excludeFieldsWithoutExposeAnnotation()
+                .create();
     }
 
     @BeforeMethod(description = "Login before performing Test Case module tests",
@@ -62,13 +68,18 @@ public class TestCasePageTest extends BaseTest {
 
     @TmsLink("QAT-2")
     @Test(description = "Check Read Test Case using WebAPI", groups = "Smoke")
-    public void testReadTestCaseOneApi(){
+    public void testReadTestCaseOneApi() throws IOException {
         log.info("Checking Read Test Case One using WebAPI");
         int caseId = testCasePageSteps.checkTestCaseReadDeep(firstCaseModel.getTitle());
         Response response = requests.readTestCase(caseId);
         log.info("Status code is: " + response.statusCode());
-        response.then().assertThat()
-                .body("result", hasItems(JsonPath.from(new File("src/test/resources/references/testCaseRef.json")).getMap("")));
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode jsonNode = objectMapper.readTree(response.asString());
+        JsonNode resultNode = jsonNode.get("result");
+        JsonNode refNode = objectMapper.readTree(new FileReader("src/test/resources/references/testCaseRef.json"));
+        TestCaseModel referenceModel = gson.fromJson(refNode.toString(), TestCaseModel.class);
+        TestCaseModel compareModel = gson.fromJson(resultNode.toString(), TestCaseModel.class);
+        Assert.assertEquals(compareModel, referenceModel);
     }
 
     @TmsLink("QAT-3")
