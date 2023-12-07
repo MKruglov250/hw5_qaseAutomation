@@ -1,0 +1,46 @@
+<testCases>
+    <TestCase>
+        <title>First Test Case</title>
+        <description>Description of First Test Case</description>
+        <statusDropdown>Actual</statusDropdown>
+        <suiteDropdown>First Suite</suiteDropdown>
+        <severityDropdown>Major</severityDropdown>
+        <priorityDropdown>Low</priorityDropdown>
+        <typeDropdown>Smoke</typeDropdown>
+        <layerDropdown>API</layerDropdown>
+        <isFlakyDropdown>Yes</isFlakyDropdown>
+        <milestoneDropdown>Not set</milestoneDropdown>
+        <behaviourDropdown>Positive</behaviourDropdown>
+        <automationStatusDropdown>Not automated</automationStatusDropdown>
+        <preconditions>Pre-condition that is very funny</preconditions>
+        <postconditions>Post-condition extremely exciting</postconditions>
+        <testStepOneName>Do lucky action</testStepOneName>
+        <testStepOneData>Enter lucky data</testStepOneData>
+        <testStepOneResult>Check lucky result</testStepOneResult>
+        <testStepTwoName>Perform silly move</testStepTwoName>
+        <testStepTwoData>Set silly values</testStepTwoData>
+        <testStepTwoResult>Verify silly consequence</testStepTwoResult>
+    </TestCase>
+    <TestCase>
+        <title>Second Test Case</title>
+        <description>Second Test Case description</description>
+        <statusDropdown>Draft</statusDropdown>
+        <suiteDropdown>Second Suite</suiteDropdown>
+        <severityDropdown>Minor</severityDropdown>
+        <priorityDropdown>High</priorityDropdown>
+        <typeDropdown>Regression</typeDropdown>
+        <layerDropdown>E2E</layerDropdown>
+        <isFlakyDropdown>No</isFlakyDropdown>
+        <milestoneDropdown>Not set</milestoneDropdown>
+        <behaviourDropdown>Negative</behaviourDropdown>
+        <automationStatusDropdown>Automated</automationStatusDropdown>
+        <preconditions>Pre-condition curious</preconditions>
+        <postconditions>Post-condition legendary</postconditions>
+        <testStepOneName>Do epic action</testStepOneName>
+        <testStepOneData>Enter epic data</testStepOneData>
+        <testStepOneResult>Check epic result</testStepOneResult>
+        <testStepTwoName>Perform stylish move</testStepTwoName>
+        <testStepTwoData>Set stylish values</testStepTwoData>
+        <testStepTwoResult>Verify stylish consequence</testStepTwoResult>
+    </TestCase>
+</testCases>

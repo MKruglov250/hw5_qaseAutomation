@@ -6,7 +6,6 @@ import lombok.Data;
 @Data
 @Builder
 public class UserModel {
-    private final String name;
     private final String email;
     private final String password;
 }

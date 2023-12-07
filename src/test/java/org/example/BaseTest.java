@@ -1,15 +1,19 @@
 package org.example;
 
 import com.codeborne.selenide.Configuration;
-import com.codeborne.selenide.logevents.SelenideLogger;
 import io.qameta.allure.Attachment;
 import io.qameta.allure.Step;
-import io.qameta.allure.selenide.AllureSelenide;
+import io.restassured.RestAssured;
 import lombok.extern.log4j.Log4j2;
+import org.example.model.UserModel;
+import org.example.model.UserModelBuilder;
+import org.example.steps.LoginPageSteps;
+import org.example.steps.TestCasePageSteps;
+import org.example.steps.TestPlanPageSteps;
+import org.example.utilities.OurListener;
 import org.example.utilities.PropertyReader;
-import org.testng.annotations.AfterSuite;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeSuite;
+import org.json.simple.parser.ParseException;
+import org.testng.annotations.*;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -19,11 +23,25 @@ import java.time.Duration;
 import java.util.Date;
 
 
+import static com.codeborne.selenide.Selenide.closeWebDriver;
 import static com.codeborne.selenide.Selenide.open;
 import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
 
+@Listeners(OurListener.class)
 @Log4j2
 public class BaseTest {
+
+    UserModel validUser = UserModelBuilder.getValidUser();
+    UserModel badUser = UserModelBuilder.getIncorrectUser();
+    LoginPageSteps loginPageSteps = new LoginPageSteps();
+    TestCasePageSteps testCasePageSteps = new TestCasePageSteps();
+    TestPlanPageSteps testPlanPageSteps = new TestPlanPageSteps();
+    Requests requests = new Requests();
+
+
+    public BaseTest() throws IOException, ParseException {
+        RestAssured.baseURI="https://api.qase.io/v1";
+    }
 
     @BeforeSuite
     public void setSystemProperties(){
@@ -38,20 +56,17 @@ public class BaseTest {
         return Files.readAllBytes(Paths.get("src/resources", resourceName));
     }
 
-    @BeforeClass(alwaysRun = true, description = "Initialize testing for Qase.io")
+//    @Parameters({"BrowserType"})
+    @BeforeSuite(alwaysRun = true, description = "Initialize testing for Qase.io")
     public void before() throws IOException {
         log.info("Starting configuring web driver");
-        Configuration.screenshots = true;
-        SelenideLogger.addListener("AllureSelenide", new AllureSelenide()
-                .screenshots(true)
-                .savePageSource(false)
-                .includeSelenideSteps(true));
-
         getFileBytes("config.properties");
-
-        Configuration.baseUrl = "https://www.sharelane.com/";
-        Configuration.browser = PropertyReader.getBrowserProperty();
-        Configuration.headless = false;
+        Configuration.baseUrl = PropertyReader.getProperty("Baseurl");
+//        if (sBrowserType != null){
+//            Configuration.browser = sBrowserType;
+//        } else {}
+        Configuration.browser = PropertyReader.getProperty("Browser");
+        Configuration.headless = Boolean.getBoolean(PropertyReader.getProperty("Headless"));
         open(".");
 
         getWebDriver().manage().window().maximize();
@@ -60,8 +75,9 @@ public class BaseTest {
         log.info("Web driver configuration complete");
     }
 
-    @AfterSuite
-    public void afterSuite() {
+    @AfterSuite(description = "Closing web drivers", alwaysRun = true)
+    public void afterTest() {
+        closeWebDriver();
     }
 
 }

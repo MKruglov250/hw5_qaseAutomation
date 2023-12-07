@@ -4,14 +4,14 @@
         <Console name="STDOUT" target="SYSTEM_OUT">
             <PatternLayout pattern="%m%n"/>
         </Console>
-        <File name="fileInfoAppender" fileName="logs/sharelane-info.log"
-              filePattern = "logs/app-%d{MM-dd-yyyy}-%i.log.gz">
+        <File name="fileInfoAppender" fileName="logs/qase-info.log" append="false"
+              filePattern = "logs/qase-info-%d{yyyy-MM-dd}-%i.log.gz">
             <PatternLayout>
                 <Pattern>%d %p %c{1.} [%t] %m%n</Pattern>
             </PatternLayout>
         </File>
-        <File name="fileDebugAppender" fileName="logs/sharelane-debug.log"
-        filePattern="logs/app-%d{MM-dd-yyyy}-%i.log.gz">
+        <File name="fileDebugAppender" fileName="logs/qase-debug.log" append="false"
+        filePattern="logs/qase-debug-%d{yyyy-MM-dd}-%i.log.gz">
             <PatternLayout>
                 <Pattern>%d %p %c{1.} [%t] %m%n</Pattern>
             </PatternLayout>

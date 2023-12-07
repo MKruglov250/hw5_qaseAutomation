@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="Testing Sharelane">
-    <test name="Regression" thread-count="1" parallel="false">
+<suite name="Testing E2e">
+    <test name="SmokeE2E" thread-count="3" parallel="classes">
         <groups>
             <run>
                 <include name="Smoke"/>
+                <include name="E2E"/>
             </run>
         </groups>
         <classes>
-            <class name="org.example.Main"/>
+            <class name="org.example.LoginTest"/>
+            <class name="org.example.TestCasePageTest"/>
+            <class name="org.example.TestPlanPageTest"/>
         </classes>
     </test> <!-- Test -->
 </suite> <!-- Suite -->

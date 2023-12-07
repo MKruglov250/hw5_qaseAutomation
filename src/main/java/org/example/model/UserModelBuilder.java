@@ -8,8 +8,6 @@ import java.io.IOException;
 
 public class UserModelBuilder {
 
-
-
     public static UserModel getValidUser() throws IOException, ParseException {
         return new UserModel.UserModelBuilder()
                 .email(LoginUtils.getLogin())
