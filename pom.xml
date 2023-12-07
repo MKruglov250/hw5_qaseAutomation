@@ -35,12 +35,9 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.0.0-M3</version>
                 <configuration>
-                    <skipTests>false</skipTests>
-                    <testFailureIgnore>true</testFailureIgnore>
-                    <forkMode>once</forkMode>
                     <argLine>
                         -javaagent:${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar
-                        -Xmx256m
+                        -Xmx1024m
                     </argLine>
                 </configuration>
             </plugin>
