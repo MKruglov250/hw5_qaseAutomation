@@ -46,18 +46,6 @@ public class TestCasePageSteps extends BaseSteps {
         return testCasePage.checkCreateSuccess();
     }
 
-    @Step("Create Mock Test Case")
-    public boolean createMockTestCase(TestCaseModel testCase){
-        log.info("Creating Mock Case from model: " + testCase.getTitle());
-        openRepository();
-        testCasePage.clickCreateCase();
-        testCasePage.setTitle(testCase);
-        testCasePage.setSuite(testCase);
-        testCasePage.clickAddStep();
-        testCasePage.setStepAction(testCase);
-        testCasePage.clickSaveButton();
-        return testCasePage.checkCreateSuccess();
-    }
 
     @Step("Read test case and get name")
     public String checkTestCaseRead(String caseName){
@@ -68,6 +56,7 @@ public class TestCasePageSteps extends BaseSteps {
         return testCasePage.titleInput.getValue();
     }
 
+
     @Step("Read test case and get CaseID")
     public int checkTestCaseReadDeep(String caseName){
         log.info("Reading Test Case: " + caseName);
@@ -76,6 +65,18 @@ public class TestCasePageSteps extends BaseSteps {
         testCasePage.clickEditCase();
         return Integer.parseInt(getWebDriver().getCurrentUrl()
                 .replace("https://app.qase.io/case/QASEAPP/edit/",""));
+    }
+
+    @Step("Get Test Case ID")
+    public int getTestCaseId(TestCaseModel model){
+        log.info("Getting id from case: " + model.getTitle());
+        openRepository();
+        testCasePage.openTestCase(model.getTitle());
+        testCasePage.clickEditCase();
+        int testCaseId = Integer.parseInt(getWebDriver().getCurrentUrl()
+                .replace("https://app.qase.io/case/QASEAPP/edit/",""));
+        openRepository();
+        return testCaseId;
     }
 
     @Step("Edit test case")
