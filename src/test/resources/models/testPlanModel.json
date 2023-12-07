@@ -1,0 +1,92 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "status": {
+      "type": "boolean"
+    },
+    "result": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "title": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "cases_count": {
+          "type": "integer"
+        },
+        "created": {
+          "type": "string"
+        },
+        "updated": {
+          "type": "string"
+        },
+        "created_at": {
+          "type": "string"
+        },
+        "updated_at": {
+          "type": "string"
+        },
+        "average_time": {
+          "type": "integer"
+        },
+        "cases": {
+          "type": "array",
+          "items": [
+            {
+              "type": "object",
+              "properties": {
+                "case_id": {
+                  "type": "integer"
+                },
+                "assignee_id": {
+                  "type": "null"
+                }
+              },
+              "required": [
+                "case_id",
+                "assignee_id"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "case_id": {
+                  "type": "integer"
+                },
+                "assignee_id": {
+                  "type": "null"
+                }
+              },
+              "required": [
+                "case_id",
+                "assignee_id"
+              ]
+            }
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "title",
+        "description",
+        "cases_count",
+        "created",
+        "updated",
+        "created_at",
+        "updated_at",
+        "average_time",
+        "cases"
+      ]
+    }
+  },
+  "required": [
+    "status",
+    "result"
+  ]
+}
