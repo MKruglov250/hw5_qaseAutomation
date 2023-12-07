@@ -3,7 +3,7 @@ package org.example;
 import io.qameta.allure.Step;
 import io.restassured.response.Response;
 import lombok.extern.log4j.Log4j2;
-import org.example.utilities.LoginUtils;
+import org.apache.http.HttpStatus;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
@@ -11,13 +11,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Arrays;
 
-import static io.restassured.RestAssured.given;
-
 @Log4j2
-public class Requests {
+public class Requests extends BaseApi{
 
-
-    String token = LoginUtils.getToken();
 
     public Requests() throws IOException, ParseException {
     }
@@ -27,9 +23,7 @@ public class Requests {
         log.info("Creating Test Case with POST Request");
         JSONParser parser = new JSONParser();
         Object obj = parser.parse(new FileReader(casePath));
-        Response response = given().contentType("application/json")
-                .accept("application/json").header("Token",token)
-                .body(obj).when().post("/case/QASEAPP");
+        Response response = post("/case/QASEAPP",obj.toString());
         log.debug("Test Case Created: " + response.jsonPath().get("result.id"));
         return response;
     }
@@ -37,11 +31,9 @@ public class Requests {
     @Step("Create Mock Test Case")
     public Response createMockTestCase(String name, int suite){
         log.info("Creating Mock Test Case with POST Request");
-        Response response = given().contentType("application/json")
-                .accept("application/json").header("Token",token)
-                .body(String.format("{\"title\":\"%s\",\"description\":\"lala\"," +
-                        "\"suite_id\":\"%d\"}",name, suite))
-                .when().post("/case/QASEAPP");
+        String body = String.format("{\"title\":\"%s\",\"description\":\"lala\"," +
+                "\"suite_id\":\"%d\"}",name, suite);
+        Response response = post("/case/QASEAPP", body);
         log.debug("Test Case Created: " + response.jsonPath().get("result.id"));
         return response;
     }
@@ -49,29 +41,20 @@ public class Requests {
     @Step("Read Test Case")
     public Response readTestCase(int caseId){
         log.info("Reading test case with GET request");
-        Response response = given().contentType("application/json")
-                .accept("application/json").header("Token",token)
-                .when().get("/case/QASEAPP/" + caseId);
-        return response;
+        return get("/case/QASEAPP/" + caseId, HttpStatus.SC_OK);
     }
 
     @Step("Update Test Case")
     public Response updateTestCase(int caseId, String updateString){
         log.info("Reading test case with GET request");
-        Response response = given().contentType("application/json")
-                .accept("application/json").header("Token",token)
-                .body(String.format("{\"description\":\"%s\"}",updateString))
-                .when().patch("/case/QASEAPP/" + caseId);
-        return response;
+        String body = String.format("{\"description\":\"%s\"}",updateString);
+        return patch("/case/QASEAPP/" + caseId, HttpStatus.SC_OK,body);
     }
 
     @Step("Update Test Case")
     public Response deleteTestCase(int caseId){
         log.info("Reading test case with GET request");
-        Response response = given().contentType("application/json")
-                .accept("application/json").header("Token",token)
-                .when().delete("/case/QASEAPP/" + caseId);
-        return response;
+        return delete("/case/QASEAPP/" + caseId, HttpStatus.SC_OK);
     }
 
     @Step("Create Test Plan")
@@ -82,9 +65,7 @@ public class Requests {
                 "  \"description\": \"%s\",\n" +
                 "  \"cases\": %s\n" +
                 "}",title,description, Arrays.toString(caseIds));
-        Response response = given().contentType("application/json")
-                .accept("application/json").header("Token",token)
-                .body(body).when().post("/plan/QASEAPP");
+        Response response = post("/plan/QASEAPP",body);
         log.debug("Test Plan Created: " + response.jsonPath().get("result.id"));
         return response;
     }
@@ -92,29 +73,20 @@ public class Requests {
     @Step("Read Test Plan")
     public Response readTestPlan(int planId){
         log.info("Reading Test Plan with GET request");
-        Response response = given().contentType("application/json")
-                .accept("application/json").header("Token",token)
-                .when().get("/plan/QASEAPP/" + planId);
-        return response;
+        return get("/plan/QASEAPP/" + planId, HttpStatus.SC_OK);
     }
 
     @Step("Update Test Plan")
     public Response updateTestPlan(int planId, String updateString){
         log.info("Updating Test Plan with PATCH request");
-        Response response = given().contentType("application/json")
-                .accept("application/json").header("Token",token)
-                .body(String.format("{\"description\":\"%s\"}",updateString))
-                .when().patch("/plan/QASEAPP/" + planId);
-        return response;
+        String body = String.format("{\"description\":\"%s\"}",updateString);
+        return patch("/plan/QASEAPP/" + planId, HttpStatus.SC_OK, body);
     }
 
     @Step("Update Test Case")
     public Response deleteTestPlan(int planId){
         log.info("Deleting Test Plan with DELETE request");
-        Response response = given().contentType("application/json")
-                .accept("application/json").header("Token",token)
-                .when().delete("/plan/QASEAPP/" + planId);
-        return response;
+        return delete("/plan/QASEAPP/" + planId, HttpStatus.SC_OK);
     }
 
 }

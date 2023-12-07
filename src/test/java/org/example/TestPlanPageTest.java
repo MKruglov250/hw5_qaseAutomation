@@ -31,6 +31,8 @@ public class TestPlanPageTest extends BaseTest {
     TestCaseModel secondCaseModel = TestCaseModelBuilder.getTestCase(2);
     static int mockCaseOneId;
     static int mockCaseTwoId;
+    static int firstCaseId;
+    static int secondCaseId;
     public static int planId;
 
     public TestPlanPageTest() throws IOException, ParseException, ParserConfigurationException, SAXException {
@@ -47,16 +49,6 @@ public class TestPlanPageTest extends BaseTest {
         log.info("Created Mock Test Cases");
     }
 
-//    @BeforeClass(description = "Create mock test cases", alwaysRun = true)
-//    public void createMockTestCases() {
-//        log.info("Creating Mock Test Cases before test");
-//        loginPageSteps.login(validUser);
-//        testCasePageSteps.openQaseProject();
-//        testCasePageSteps.createMockTestCase(mockCaseOne);
-//        testCasePageSteps.createMockTestCase(mockCaseTwo);
-//        log.info("Created mock test cases");
-//        loginPageSteps.logoutFromSite();
-//    }
 
     @BeforeMethod(description = "Login before performing Test Case module tests",
             alwaysRun = true)
@@ -72,30 +64,14 @@ public class TestPlanPageTest extends BaseTest {
         loginPageSteps.logoutFromSite();
     }
 
-//    @AfterClass(description = "Deleting Mock Test Cases and E2E Test Plan", alwaysRun = true)
-//    public void deleteMockCasesAndRealPlan(){
-//        log.info("Deleting mock cases and E2E test plan");
-//        loginPageSteps.login(validUser);
-//        testCasePageSteps.openQaseProject();
-//        testCasePageSteps.deleteTestCase(mockCaseOne.getTitle());
-//        testCasePageSteps.deleteTestCase(mockCaseTwo.getTitle());
-//        Selenide.refresh();
-//        testCasePageSteps.deleteTestCase(firstCaseModel.getTitle());
-//        testCasePageSteps.deleteTestCase(secondCaseModel.getTitle());
-//        TestCaseModelBuilder.mockTestCases = 0;
-//        log.info("Deleted mock test cases");
-//        Selenide.refresh();
-//        testPlanPageSteps.openTestPlans();
-//        testPlanPageSteps.deleteTestPlan(realTestPlan.getTitle());
-//        log.info("Deleted E2E Test Plan");
-//        loginPageSteps.logoutFromSite();
-//    }
 
     @AfterClass(description = "Delete Mock Cases and e2e Test Plan")
     public void deleteMockCasesAndTestPlan(){
         log.info("Deleting mock cases");
         requests.deleteTestCase(mockCaseOneId);
         requests.deleteTestCase(mockCaseTwoId);
+        requests.deleteTestCase(firstCaseId);
+        requests.deleteTestCase(secondCaseId);
         log.info("Deleting e2e test plan");
         requests.deleteTestPlan(planId);
     }
@@ -138,7 +114,9 @@ public class TestPlanPageTest extends BaseTest {
         log.info("Creating test plan with First Test Case & Second Test Case");
         testCasePageSteps.openRepository();
         testCasePageSteps.createTestCase(firstCaseModel);
+        firstCaseId = testCasePageSteps.getTestCaseId(firstCaseModel);
         testCasePageSteps.createTestCase(secondCaseModel);
+        secondCaseId = testCasePageSteps.getTestCaseId(secondCaseModel);
         testPlanPageSteps.createEndtoendPlan(realTestPlan);
         testPlanPageSteps.readTestPlan(realTestPlan.getTitle());
         planId = Integer.parseInt(getWebDriver().getCurrentUrl().replace("https://app.qase.io/plan/QASEAPP/",""));

@@ -153,7 +153,7 @@ public class TestCasePage {
     @Step("Set Pre-conditions from model")
     public void setPrecondition(TestCaseModel testCase){
         log.debug("Setting Precondition to: " + testCase.getPreconditions());
-        preconditionInput.setValue(testCase.getPostconditions());
+        preconditionInput.setValue(testCase.getPreconditions());
     }
 
     @Step("Set Post-conditions from model")
