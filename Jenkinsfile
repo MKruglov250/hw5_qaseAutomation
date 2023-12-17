@@ -10,7 +10,7 @@ pipeline {
         stage('Test') {
             steps {
                 // Get some code from a GitHub repository
-                git credentialsId: 'Jenkins-token', url: 'https://github.com/MKruglov250/hw5_qaseAutomation.git'
+                git url: 'https://github.com/MKruglov250/hw5_qaseAutomation.git'
 
                 // Run Maven on a Unix agent.
                 //sh "mvn -Dmaven.test.failure.ignore=true clean package"
