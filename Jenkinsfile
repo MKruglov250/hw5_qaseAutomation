@@ -6,18 +6,11 @@ pipeline {
         maven "Maven"
     }
 
-    parameters {
-            gitParameter branchFilter: 'origin/(.*)', defaultValue: 'main', name: 'webapi', type: 'GitParameterDefinition'
-    }
-
     stages {
         stage('Test') {
             steps {
-                // Get some code from a GitHub repository
-                git url: 'https://github.com/MKruglov250/hw5_qaseAutomation.git'
-
                 // Run Maven Verify
-                mvn verify
+                sh "mvn verify"
             }
 
 
