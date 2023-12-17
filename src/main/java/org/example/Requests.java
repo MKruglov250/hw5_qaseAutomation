@@ -53,7 +53,7 @@ public class Requests extends BaseApi{
 
     @Step("Update Test Case")
     public Response deleteTestCase(int caseId){
-        log.info("Reading test case with GET request");
+        log.info("Deleting Test Case with DELETE request");
         return delete("/case/QASEAPP/" + caseId, HttpStatus.SC_OK);
     }
 
