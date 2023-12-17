@@ -10,16 +10,22 @@ pipeline {
         stage('Test') {
             steps {
                 // Get some code from a GitHub repository
-                git url: 'https://github.com/MKruglov250/hw5_qaseAutomation.git'
-
-                // Run Maven on a Unix agent.
-                //sh "mvn -Dmaven.test.failure.ignore=true clean package"
+                git 'https://github.com/MKruglov250/hw5_qaseAutomation.git'
 
                 // To run Maven on a Windows agent, use
-                bat "mvn -Dmaven.test.failure.ignore=true clean test"
+                bat "mvn clean test -Dmaven.test.failure.ignore=true"
+            }
+
+            post {
+                // If Maven was able to run the tests, even if some of the test
+                // failed, record the test results and archive the jar file.
+                success {
+                    junit '**/target/surefire-reports/TEST-*.xml'
+                }
+
             }
         }
-        stage('reports') {
+        stage('Reporting') {
             steps {
                 script {
                     allure([
