@@ -49,8 +49,19 @@ public class TestPlanPageTest extends BaseTest {
         log.info("Created Mock Test Cases");
     }
 
+    @AfterClass(description = "Delete Mock Cases and e2e Test Plan")
+    public void deleteMockCasesAndTestPlan(){
+        log.info("Deleting mock cases");
+        requests.deleteTestCase(mockCaseOneId);
+        requests.deleteTestCase(mockCaseTwoId);
+        requests.deleteTestCase(firstCaseId);
+        requests.deleteTestCase(secondCaseId);
+        log.info("Deleting e2e test plan");
+        requests.deleteTestPlan(planId);
+    }
 
-    @BeforeMethod(description = "Login before performing Test Case module tests",
+
+    @BeforeMethod(description = "Login before performing Test Plan module tests",
             alwaysRun = true)
     public void beforeMethod() {
         log.info("Logging in");
@@ -64,17 +75,6 @@ public class TestPlanPageTest extends BaseTest {
         loginPageSteps.logoutFromSite();
     }
 
-
-    @AfterClass(description = "Delete Mock Cases and e2e Test Plan")
-    public void deleteMockCasesAndTestPlan(){
-        log.info("Deleting mock cases");
-        requests.deleteTestCase(mockCaseOneId);
-        requests.deleteTestCase(mockCaseTwoId);
-        requests.deleteTestCase(firstCaseId);
-        requests.deleteTestCase(secondCaseId);
-        log.info("Deleting e2e test plan");
-        requests.deleteTestPlan(planId);
-    }
 
     @TmsLink("QAT-5")
     @Test(description = "Check Create Test Plan", groups = "Smoke")
