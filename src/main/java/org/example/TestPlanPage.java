@@ -79,8 +79,8 @@ public class TestPlanPage {
 
     @Step("Select Test Case")
     public void selectTestCase(String caseName){
-        SelenideElement caseCheckbox = $x(String.format("//div[@class='suitecase-info']/p[text()='%s']" +
-                "/parent::div/parent::div//label",caseName));
+        SelenideElement caseCheckbox = $x(String.format("//p[text()='%s']" +
+                "/parent::div/parent::div//input[@type='checkbox']/parent::span",caseName));
         caseCheckbox.click();
     }
 
