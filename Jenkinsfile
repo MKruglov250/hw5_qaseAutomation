@@ -6,10 +6,6 @@ pipeline {
         maven "maven"
     }
 
-    parameters {
-        gitParameter branchFilter: 'origin/(.*)', defaultValue: 'main', name: 'webapi', type: 'GitParameterDefinition'
-    }
-
     stages {
         stage('Test') {
             steps {
