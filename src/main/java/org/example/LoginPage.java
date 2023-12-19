@@ -11,17 +11,11 @@ import static com.codeborne.selenide.Selenide.$x;
 public class LoginPage {
 
     static SelenideElement emailInput = $x("//input[@name='email']");
-
     static SelenideElement passwordInput = $x("//input[@name='password']");
-
     static SelenideElement loginButton = $x("//button[@type='submit']");
-
     static SelenideElement projectQaseControl = $x("//a[text()='Qaseapp']");
-
     static SelenideElement badCredentialsMessage = $x("//*[text()='These credentials do not match our records.']");
-
     public static SelenideElement menuButton = $x("//img[contains(@src,'.jpg')]");
-
     public static SelenideElement logoutButton = $x("//*[text()='Sign out']");
 
 

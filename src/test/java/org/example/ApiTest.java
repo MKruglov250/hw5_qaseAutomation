@@ -17,14 +17,14 @@ import java.io.File;
 import java.io.IOException;
 
 @Log4j2
-public class ApiTests {
+public class ApiTest {
 
     static int createdCaseId = 638;
     static int mockOneId = 0;
     static int mockTwoId = 0;
     static int createPlanId = 0;
     Requests requests = new Requests();
-    public ApiTests() throws IOException, ParseException {
+    public ApiTest() throws IOException, ParseException {
         RestAssured.baseURI="https://api.qase.io/v1";
     }
 
