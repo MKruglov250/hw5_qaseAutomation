@@ -27,14 +27,14 @@ public class LoginTest extends BaseTest {
     @Test(description = "Checking Login To Website with valid credentials", groups = "Smoke",
             priority = 1)
     public void checkValidLogin(){
-        log.info("Checking login with valid credentials");
+        log.info("Test: login with valid credentials");
         Assert.assertTrue(loginPageSteps.loginToSite(validUser));
     }
 
     @TmsLink("QAT-10")
     @Test(description = "Checking Login To Website with bad credentials", groups = "Regression")
     public void checkInvalidLogin(){
-        log.info("Checking login with valid credentials");
+        log.info("Test: login with bad credentials");
         Assert.assertFalse(loginPageSteps.loginToSite(badUser));
     }
 
