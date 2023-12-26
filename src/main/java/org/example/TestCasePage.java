@@ -172,18 +172,20 @@ public class TestCasePage {
     public void setStepAction(TestCaseModel testCase){
         log.debug("Setting Step Action to: " + testCase.getTestStepOneName());
         stepActionInput.setValue(testCase.getTestStepOneName());
+        stepActionInput.pressTab();
     }
 
     @Step("Set Step Data from model")
     public void setStepData(TestCaseModel testCase){
         log.debug("Setting Step Data to: " + testCase.getTestStepOneData());
-        stepDataInput.setValue(testCase.getTestStepOneData());
+        stepDataInput.sendKeys(testCase.getTestStepOneData());
+        stepDataInput.pressTab();
     }
 
     @Step("Set Step Result from model")
     public void setStepResult(TestCaseModel testCase){
         log.debug("Setting Step Result to: " + testCase.getTestStepOneResult());
-        stepResultInput.setValue(testCase.getTestStepOneResult());
+        stepResultInput.sendKeys(testCase.getTestStepOneResult());
     }
 
     @Step("Click Save button")
